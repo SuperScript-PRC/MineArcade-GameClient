@@ -1,12 +1,12 @@
 package protocol {
     public class packet_ids {
-        IDClientLogin = 1
-        IDClientLoginResp = 2
-        IDKickClient = 3
-        IDDialLag = 4
-        IDDialLagResp = 5
-        IDPlayerBasics = 6
-        IDBackpackResponse = 7
-        IDSimpleEvent = 8
+        public const IDClientLogin: int = 1
+        public const IDClientLoginResp: int = 2
+        public const IDKickClient: int = 3
+        public const IDDialLag: int = 4
+        public const IDDialLagResp: int = 5
+        public const IDPlayerBasics: int = 6
+        public const IDBackpackResponse: int = 7
+        public const IDSimpleEvent: int = 8
     }
 }
