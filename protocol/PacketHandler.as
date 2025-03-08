@@ -1,11 +1,10 @@
 package protocol {
     import flash.net.Socket;
-    import protocol.reader;
 
-    public class packet_handler extends reader {
+    public class PacketHandler extends Reader {
         private var packet_listeners:Object = {};
 
-        public function packet_handler(sock:Socket) {
+        public function PacketHandler(sock:Socket) {
             super(sock);
         }
 
@@ -47,10 +46,10 @@ package protocol {
             packet_listeners[pkID] = listeners;
         }
 
-        private function handlePacket(pk:Object):void {
+        public function handlePacket(pk:Object):void {
             var listeners:* = packet_listeners[pk.ID]
             if (listeners is Array)
-                listeners.forEach(function(listener:Function):void {
+                listeners.forEach(function(listener:Function, index:int, arr:Array):void {
                     listener(pk.Packet);
                 });
         }

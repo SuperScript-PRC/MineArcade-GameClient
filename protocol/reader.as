@@ -1,14 +1,12 @@
 package protocol {
     import flash.utils.ByteArray;
     import flash.net.Socket;
-    import protocol.packet_ids
 
 
-    public class reader {
+    public class Reader {
         private var socket:Socket;
-        private var pkIDs:packet_ids = new packet_ids()
 
-        public function reader(sock:Socket) {
+        public function Reader(sock:Socket) {
             socket = sock;
         }
 
@@ -22,30 +20,39 @@ package protocol {
         }
 
         public function ReadPacket():Object {
-            var buf:ByteArray = new ByteArray();
-            socket.readBytes(buf);
-            var pkID:int = buf.readByte() << 2 | buf.readByte();
+            var pkID:int = this.socket.readInt();
             switch (pkID) {
-                case pkIDs.IDClientLoginResp:
-                    return {ID: pkIDs.IDClientLoginResp, Packet: LoginResp()}
-                case pkIDs.IDKickClient:
-                    return {ID: pkIDs.IDKickClient, Packet: KickClient()}
-                case pkIDs.IDDialLagResp:
-                    return {ID: pkIDs.IDDialLagResp, Packet: DialLagResp()}
-                case pkIDs.IDPlayerBasics:
-                    return {ID: pkIDs.IDPlayerBasics, Packet: PlayerBasics()}
-                case pkIDs.IDBackpackResponse:
-                    return {ID: pkIDs.IDBackpackResponse, Packet: BackpackResponse()}
-                case pkIDs.IDSimpleEvent:
-                    return {ID: pkIDs.IDSimpleEvent, Packet: SimpleEvent()}
+                case PacketIDs.IDServerHandshake:
+                    return {ID: PacketIDs.IDServerHandshake, Packet: ServerHandshake()}
+                case PacketIDs.IDClientLoginResp:
+                    return {ID: PacketIDs.IDClientLoginResp, Packet: ClientLoginResp()}
+                case PacketIDs.IDKickClient:
+                    return {ID: PacketIDs.IDKickClient, Packet: KickClient()}
+                case PacketIDs.IDDialLagResp:
+                    return {ID: PacketIDs.IDDialLagResp, Packet: DialLagResp()}
+                case PacketIDs.IDPlayerBasics:
+                    return {ID: PacketIDs.IDPlayerBasics, Packet: PlayerBasics()}
+                case PacketIDs.IDBackpackResponse:
+                    return {ID: PacketIDs.IDBackpackResponse, Packet: BackpackResponse()}
+                case PacketIDs.IDSimpleEvent:
+                    return {ID: PacketIDs.IDSimpleEvent, Packet: SimpleEvent()}
                 default:
                     trace("[PacketHandler] Unknown packet ID: " + pkID);
-                    return {ID: -1};
+                    return {ID: -1, Packet: null};
             }
         }
 
         // 数据包反序列化
-        public function LoginResp():Object {
+        public function ServerHandshake():Object {
+            var success:Boolean = socket.readBoolean();
+            var server_version:int = socket.readInt();
+            var server_message:String = socket.readUTF();
+            return {Success: success,
+                    ServerVersion: server_version,
+                    ServerMessage: server_message}
+        }
+
+        public function ClientLoginResp():Object {
             var success:Boolean = socket.readBoolean();
             var message:String = socket.readUTF();
             var status_code:Number = socket.readByte();
