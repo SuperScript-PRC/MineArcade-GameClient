@@ -54,7 +54,7 @@ package messages {
                 if (mc.alpha <= 0) {
                     mc.removal()
                 } else {
-                    mc.alpha -= 0.1
+                    mc.alpha -= 0.04
                 }
             }
             mc.removal = function removal():void {
