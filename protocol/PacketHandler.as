@@ -1,11 +1,10 @@
 package protocol {
-    import flash.net.Socket;
 
     public class PacketHandler extends Reader {
         private var packet_listeners:Object = {};
 
-        public function PacketHandler(sock:Socket) {
-            super(sock);
+        public function PacketHandler(conn:Connection) {
+            super(conn.socket);
         }
 
         public function addPacketListener(pkID:Number, listener:Function):void {

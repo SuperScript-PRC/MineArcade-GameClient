@@ -6,41 +6,40 @@ package net_connection {
     import auth.Handshake;
     import messages.top_message
     import gui.SimpleWindow
+    import core.CorArcade;
 
-    public class Starter {
-        public function Starter() {
-            var conn:Connection = new Connection("127.0.0.1", 6000);
-            var hdl:PacketHandler = new PacketHandler(conn.socket);
-            var writer:Writer = new Writer(conn.socket);
-            var handshake:Handshake = new Handshake(writer, hdl);
-            conn.hookHandler(hdl);
-            conn.hookConnectionListener(function():void {
+    public class HandshakeFinisher {
+        public function HandshakeFinisher(cor:CorArcade, ok_cb:Function) {
+            var handshake:Handshake = new Handshake(cor.getPacketWriter(), cor.getPacketHander());
+            cor.getConnection().hookConnectionListener(function():void {
                 handshake.sendHandshake(function(success:Boolean, msg:String):void {
                     if (success) {
                         top_message.show("登录已就绪")
+                        ok_cb()
                     } else {
                         trace("[error] handshake: " + msg)
                         SimpleWindow.error("连接失败: " + msg, 400, 200, function():void {
                             StageMC.stage.gotoAndPlay(1, "Preload")
                         })
-                        conn.removeListeners()
+                        cor.getConnection().close()
                     }
                 })
             });
-            conn.hookDisconnectionListener(function():void {
+            cor.getConnection().hookDisconnectionListener(function():void {
                 SimpleWindow.error("连接断开", 400, 200, function():void {
                     StageMC.stage.gotoAndPlay(1, "Preload")
                 })
-                conn.removeListeners()
+                cor.getConnection().close()
             })
-            conn.hookErrorListener(function(err:String):void {
+            cor.getConnection().hookErrorListener(function(err:String):void {
                 SimpleWindow.error("连接错误: " + err, 400, 200, function():void {
                     StageMC.stage.gotoAndPlay(1, "Preload")
                 })
-                conn.removeListeners()
+                cor.getConnection().close()
             })
-            conn.setListeners()
+            cor.getConnection().setListeners()
             top_message.show("正在连接到服务器..")
+            cor.getConnection().ConnectServer()
         }
     }
 }

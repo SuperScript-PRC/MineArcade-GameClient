@@ -22,7 +22,7 @@ package auth {
         }
 
         public function Auth(username:String, password:String, login_resp_cb:Function):void {
-            hooked_packet_handler.addPacketListener(PacketIDs.IDClientLoginResp, function(pk:Object):void {
+            hooked_packet_handler.addPacketListenerOnce(PacketIDs.IDClientLoginResp, function(pk:Object):void {
                 login_resp_cb(pk.Success, pk.Message, pk.StatusCode)
             });
             hooked_packet_sender.ClientLogin(username, getBase64OfMD5(password + "minearc#01"));

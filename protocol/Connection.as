@@ -8,6 +8,9 @@ package protocol {
     public class Connection {
         public var socket:Socket;
         private var pk_handler:PacketHandler;
+        private var ip:String;
+        private var port:Number;
+
         private var conn_listener:Function = function():void {
             trace("No connection listener")
         };
@@ -20,6 +23,11 @@ package protocol {
 
         public function Connection(ip:String, port:Number) {
             this.socket = new Socket();
+            this.ip = ip;
+            this.port = port;
+        }
+
+        public function ConnectServer():void {
             this.socket.connect(ip, port);
         }
 
@@ -78,6 +86,11 @@ package protocol {
             this.socket.removeEventListener(ProgressEvent.SOCKET_DATA, onData);
             this.socket.removeEventListener(IOErrorEvent.IO_ERROR, onError);
             this.socket.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
+        }
+
+        public function close():void {
+            this.removeListeners()
+            this.socket.close()
         }
     }
 }

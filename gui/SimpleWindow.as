@@ -11,7 +11,11 @@
             windowmc.y = y
             windowmc.setText(msg)
             windowmc.visible = false
-            windowmc.ok_cb = ok_cb
+            windowmc.ok_cb = function():void {
+                resumeRoot()
+                ok_cb()
+            }
+            pauseRoot()
         }
 
         public static function warning(msg:String, x:Number = 400, y:Number = 200, ok_cb:Function = undefined):void {
@@ -21,7 +25,11 @@
             windowmc.y = y
             windowmc.setText(msg)
             windowmc.visible = false
-            windowmc.ok_cb = ok_cb
+            windowmc.ok_cb = function():void {
+                resumeRoot()
+                ok_cb()
+            }
+            pauseRoot()
         }
 
         public static function error(msg:String, x:Number = 400, y:Number = 200, ok_cb:Function = undefined):void {
@@ -31,7 +39,19 @@
             windowmc.y = y
             windowmc.setText(msg)
             windowmc.visible = false
-            windowmc.ok_cb = ok_cb
+            windowmc.ok_cb = function():void {
+                resumeRoot()
+                ok_cb()
+            }
+            pauseRoot()
+        }
+
+        private static function pauseRoot():void {
+            StageMC.stage.isPaused = true
+        }
+
+        private static function resumeRoot():void {
+            StageMC.stage.isPaused = false
         }
     }
 }

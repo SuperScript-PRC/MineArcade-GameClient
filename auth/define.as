@@ -1,6 +1,6 @@
 package auth
 {
     public class define {
-        public static const CLIENT_VERSION: int = 10
+        public static const CLIENT_VERSION: int = 100
     }
 }

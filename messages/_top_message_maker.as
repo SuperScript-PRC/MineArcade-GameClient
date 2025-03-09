@@ -4,13 +4,14 @@ package messages {
     import flash.text.TextField;
     import flash.events.Event;
     import flash.text.TextFormat;
+    import define.StageData
     import mcs_getter.StageMC;
 
     public class _top_message_maker {
         private var mcs:Array = new Array()
+        private var scrolly:Number = 0;
         private static const BORDER_WIDTH:Number = 12
         private static const BORDER_HEIGHT:Number = 8
-        private static const STAGE_WIDTH:Number = 1000
 
         public function _top_message_maker() {
         }
@@ -39,25 +40,12 @@ package messages {
 
             mc.addChild(tf)
             mc.timer = 0
-            mc.x = STAGE_WIDTH / 2 - mc_width / 2
-            mc.y = -mc_height + 5
+            mc.x = StageData.StageWidth / 2 - mc_width / 2
             var moveTimer:int = 0
             // fps=60
-            mc.animateIn_1 = function animateIn_1(_:Event):void {
-                if (moveTimer > 0) {
-                    moveTimer--
-                    mcs.forEach(function(_mc:MovieClip, index:int, array:Array):void {
-                        _mc.y += mc_height * 0.05
-                    })
-                } else {
-                    mc.removeEventListener(Event.ENTER_FRAME, mc.animateIn_1)
-                    mc.addEventListener(Event.ENTER_FRAME, mc.maintain)
-                }
-            }
             mc.maintain = function maintain(_:Event):void {
                 mc.timer++
                 if (mc.timer >= 240) {
-                    //trace("x=" + mc.x + ", y=" + mc.y + ", height=" + mc.height + ", width=" + mc.width)
                     mc.removeEventListener(Event.ENTER_FRAME, mc.maintain)
                     mc.addEventListener(Event.ENTER_FRAME, mc.removeOut_1)
                 }
@@ -75,11 +63,29 @@ package messages {
                 if (mc.parent != null)
                     mc.parent.removeChild(mc)
             }
-            //trace("curr stage: " + stage)
             StageMC.stage.addChild(mc)
             mcs.push(mc)
-            moveTimer = 20
-            mc.addEventListener(Event.ENTER_FRAME, mc.animateIn_1)
+            mc.y = -activate_scroll(mc_height + 5) + 5
+            mc.addEventListener(Event.ENTER_FRAME, mc.maintain)
+        }
+
+        private function scroll(_:Event):void {
+            if (scrolly <= 0) {
+                StageMC.stage.removeEventListener(Event.ENTER_FRAME, scroll)
+                return
+            }
+            var max_sub_value:Number = Math.min(scrolly, 5)
+            scrolly -= max_sub_value
+            mcs.forEach(function(_mc:MovieClip, index:int, array:Array):void {
+                _mc.y += max_sub_value
+            })
+        }
+
+        private function activate_scroll(mv:Number):Number {
+            if (scrolly == 0)
+                StageMC.stage.addEventListener(Event.ENTER_FRAME, scroll)
+            scrolly += mv
+            return scrolly
         }
     }
 }
