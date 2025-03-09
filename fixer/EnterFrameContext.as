@@ -17,7 +17,7 @@ package fixer {
             const current_frame:int = mc.currentFrame
             const current_scene:flash.display.Scene = mc.currentScene
             function _enterframe_ctx(_:Event):void {
-                if (mc.root == null || (lock_frame && (mc.currentFrame != current_frame || mc.currentScene != current_scene))) {
+                if (mc.root == null || (lock_frame && (mc.currentFrame != current_frame || mc.currentScene.name != current_scene.name))) {
                     mc.removeEventListener(Event.ENTER_FRAME, _enterframe_ctx)
                 } else {
                     onEnterFrame()

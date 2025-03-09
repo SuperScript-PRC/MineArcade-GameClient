@@ -12,9 +12,10 @@
             windowmc.setText(msg)
             windowmc.visible = false
             windowmc.ok_cb = function():void {
-                resumeRoot()
+                if(can_resume) resumeRoot()
                 ok_cb()
             }
+            var can_resume:Boolean = !StageMC.root.isPaused
             pauseRoot()
         }
 
@@ -26,13 +27,14 @@
             windowmc.setText(msg)
             windowmc.visible = false
             windowmc.ok_cb = function():void {
-                resumeRoot()
+                if(can_resume) resumeRoot()
                 ok_cb()
             }
+            var can_resume:Boolean = !StageMC.root.isPaused
             pauseRoot()
         }
 
-        public static function error(msg:String, x:Number = 400, y:Number = 200, ok_cb:Function = undefined):void {
+        public static function error(msg:String, x:Number = 400, y:Number = 200, ok_cb:* = undefined):void {
             var windowmc:MovieClip = WindowMC.createErrorWindowMC()
             StageMC.stage.addChild(windowmc)
             windowmc.x = x
@@ -40,18 +42,19 @@
             windowmc.setText(msg)
             windowmc.visible = false
             windowmc.ok_cb = function():void {
-                resumeRoot()
-                ok_cb()
+                if(can_resume) resumeRoot()
+                if(ok_cb != undefined) ok_cb()
             }
+            var can_resume:Boolean = !StageMC.root.isPaused
             pauseRoot()
         }
 
         private static function pauseRoot():void {
-            StageMC.stage.isPaused = true
+            StageMC.root.isPaused = true
         }
 
         private static function resumeRoot():void {
-            StageMC.stage.isPaused = false
+            StageMC.root.isPaused = false
         }
     }
 }

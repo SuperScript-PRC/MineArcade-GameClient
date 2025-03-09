@@ -5,6 +5,7 @@ package auth {
     import protocol.PacketHandler;
     import protocol.Writer;
     import protocol.PacketIDs;
+    import core.CorArcade;
 
     public class Authentication {
         private var socket:Socket;
@@ -13,12 +14,9 @@ package auth {
         private var hooked_packet_sender:Writer;
         private const pkIDs:PacketIDs = new PacketIDs();
 
-        public function HookPacketHandler(hdl:PacketHandler):void {
-            hooked_packet_handler = hdl;
-        }
-
-        public function HookPacketSender(snd:Writer):void {
-            hooked_packet_sender = snd;
+        public function Authentication(cor:CorArcade) {
+            hooked_packet_handler = cor.getPacketHander()
+            hooked_packet_sender = cor.getPacketWriter();
         }
 
         public function Auth(username:String, password:String, login_resp_cb:Function):void {

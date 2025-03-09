@@ -2,14 +2,14 @@ package core {
     import protocol.Connection;
     import protocol.PacketHandler;
     import protocol.Writer;
-    import flash.display.MovieClip;
     import mcs_getter.StageMC;
+    import flash.display.MovieClip;
 
     public class CorArcade {
         private var conn:Connection;
         private var pk_handler:PacketHandler;
         private var pk_writer:Writer;
-        private var stage:MovieClip = StageMC.stage;
+        private var root:MovieClip = StageMC.root;
 
         public function CorArcade() {
             conn = new Connection("127.0.0.1", 6000);
