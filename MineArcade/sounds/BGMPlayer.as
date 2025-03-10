@@ -3,7 +3,7 @@ package MineArcade.sounds {
     import flash.media.Sound;
     import flash.net.URLRequest;
     import flash.events.IOErrorEvent;
-    import MineArcade.messages.top_message;
+    import MineArcade.gui.TopMessage;
 
     public class BGMPlayer {
         private var sound:Sound = new Sound();
@@ -11,7 +11,7 @@ package MineArcade.sounds {
 
         public function BGMPlayer(filepath:String) {
             sound.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void {
-                top_message.show("无法播放音乐, 资源丢失")
+                TopMessage.show("无法播放音乐, 资源丢失")
             })
             sound.load(new URLRequest(filepath));
         }

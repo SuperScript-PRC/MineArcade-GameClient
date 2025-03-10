@@ -1,4 +1,5 @@
-package MineArcade.messages {
+package MineArcade.gui {
+
     import flash.display.MovieClip;
     import flash.display.Graphics;
     import flash.text.TextField;
@@ -7,16 +8,17 @@ package MineArcade.messages {
     import MineArcade.define.StageData
     import MineArcade.mcs_getter.StageMC;
 
-    public class _top_message_maker {
-        private var mcs:Vector.<MovieClip> = new Vector.<MovieClip>()
-        private var scrolly:Number = 0;
+    public class TopMessage {
+        private static var scrolly:Number = 0;
+        private static var mcs:Vector.<MovieClip> = new Vector.<MovieClip>()
         private static const BORDER_WIDTH:Number = 12
         private static const BORDER_HEIGHT:Number = 8
 
-        public function _top_message_maker() {
+        public static function show(msg:String):void {
+            _make_top_message(msg)
         }
 
-        public function _make_top_message(msg:String):void {
+        private static function _make_top_message(msg:String):void {
             var mc:MovieClip = new MovieClip();
             var tf:TextField = new TextField();
             var g:Graphics = mc.graphics;
@@ -69,7 +71,7 @@ package MineArcade.messages {
             mc.addEventListener(Event.ENTER_FRAME, mc.maintain)
         }
 
-        private function scroll(_:Event):void {
+        private static function scroll(_:Event):void {
             if (scrolly <= 0) {
                 StageMC.stage.removeEventListener(Event.ENTER_FRAME, scroll)
                 return
@@ -81,7 +83,7 @@ package MineArcade.messages {
             })
         }
 
-        private function activate_scroll(mv:Number):Number {
+        private static function activate_scroll(mv:Number):Number {
             if (scrolly == 0)
                 StageMC.stage.addEventListener(Event.ENTER_FRAME, scroll)
             scrolly += mv

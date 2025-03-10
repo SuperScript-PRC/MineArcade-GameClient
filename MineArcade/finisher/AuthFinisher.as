@@ -2,8 +2,8 @@ package MineArcade.finisher
 {
     import MineArcade.auth.Authentication;
     import MineArcade.core.CorArcade;
-    import MineArcade.messages.top_message;
-    import MineArcade.gui.SimpleWindow;
+    import MineArcade.gui.TopMessage;
+    import MineArcade.gui.TipWindow;
 
     public class AuthFinisher
     {
@@ -18,10 +18,10 @@ package MineArcade.finisher
         {
             auth_machine.Auth(username, password, function(success:Boolean, msg:String, status_code:int):void{
                 if (success) {
-                    top_message.show("登录成功, 欢迎 " + username)
+                    TopMessage.show("登录成功, 欢迎 " + username)
                     ok_cb()
                 } else {
-                    SimpleWindow.error("登录失败: " + msg, 500, 300)
+                    TipWindow.error("登录失败: " + msg, 500, 300)
                 }
             }
 )

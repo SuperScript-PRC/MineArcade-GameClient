@@ -10,13 +10,7 @@ package MineArcade.protecter
             使得播放器禁用用户的右键菜单设置.
             */
             var contextMenu:ContextMenu = new ContextMenu();
-            contextMenu.builtInItems.forwardAndBack = false;
-            contextMenu.builtInItems.play = false;
-            contextMenu.builtInItems.print = false;
-            contextMenu.builtInItems.rewind = false;
-            contextMenu.builtInItems.zoom = false;
-            contextMenu.builtInItems.loop = false;
-            contextMenu.builtInItems.quality = false;
+            contextMenu.hideBuiltInItems()
             StageMC.root.contextMenu = contextMenu
         }
     }

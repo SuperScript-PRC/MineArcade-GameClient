@@ -3,7 +3,7 @@
     import MineArcade.mcs_getter.WindowMC
     import MineArcade.mcs_getter.StageMC
 
-    public class SimpleWindow {
+    public class TipWindow {
         public static function info(msg:String, x:Number = 400, y:Number = 200, ok_cb:Function = undefined):void {
             var windowmc:MovieClip = WindowMC.createInfoWindowMC()
             StageMC.stage.addChild(windowmc)

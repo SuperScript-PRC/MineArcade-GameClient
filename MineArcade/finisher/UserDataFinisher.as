@@ -3,7 +3,7 @@ package MineArcade.finisher {
     import MineArcade.core.CorArcade;
     import MineArcade.protocol.PacketIDs;
     import MineArcade.user.UserData;
-    import MineArcade.gui.SimpleWindow;
+    import MineArcade.gui.TipWindow;
     import MineArcade.mcs_getter.StageMC;
 
     public class UserDataFinisher {
@@ -29,7 +29,7 @@ package MineArcade.finisher {
             })
             setTimeout(function():void {
                 if (!ok) {
-                    SimpleWindow.error("无法获取用户数据", 500, 300, ok_cb = function():void {
+                    TipWindow.error("无法获取用户数据", 500, 300, ok_cb = function():void {
                         StageMC.root.gotoAndStop(1, "Preload")
                     })
                 }
