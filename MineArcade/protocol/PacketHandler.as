@@ -1,5 +1,7 @@
 package MineArcade.protocol {
 
+    import flash.utils.setTimeout;
+
     public class PacketHandler extends Reader {
         private var packet_listeners:Object = {};
 
@@ -33,7 +35,6 @@ package MineArcade.protocol {
         }
 
         public function addPacketListenerOnce(pkID:Number, listener:Function):void {
-            // hello
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
                 listeners = [];
@@ -43,6 +44,26 @@ package MineArcade.protocol {
             }
             listeners.push(fnc);
             packet_listeners[pkID] = listeners;
+        }
+
+        public function addPacketListenerOnceWithTimeout(pkID:Number, listener:Function, timeout:int, timeout_cb:Function):void {
+            var listeners:* = packet_listeners[pkID]
+            var ok:Boolean = false;
+            if (listeners == undefined)
+                listeners = [];
+            var fnc:Function = function(packet:Object):void {
+                listener(packet);
+                removePacketListener(pkID, fnc);
+                ok = true;
+            }
+            listeners.push(fnc);
+            packet_listeners[pkID] = listeners;
+            setTimeout(function():void {
+                if (!ok) {
+                    timeout_cb();
+                    removePacketListener(pkID, fnc);
+                }
+            }, timeout)
         }
 
         public function handlePacket(pk:Object):void {
