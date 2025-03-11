@@ -18,6 +18,10 @@ package MineArcade.fixer {
             const current_scene:flash.display.Scene = mc.currentScene
             function _enterframe_ctx(_:Event):void {
                 if (mc.root == null || (lock_frame && (mc.currentFrame != current_frame || mc.currentScene.name != current_scene.name))) {
+                    // trace("Removed:"+mc)
+                    // trace("root==null: " + (mc.root == null))
+                    // trace("current_frame: " + (mc.currentFrame != current_frame))
+                    // trace("current_scene: " + (mc.currentScene.name != current_scene.name))
                     mc.removeEventListener(Event.ENTER_FRAME, _enterframe_ctx)
                 } else {
                     onEnterFrame()

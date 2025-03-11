@@ -27,7 +27,11 @@ package MineArcade.mcs_getter {
             if (scene == undefined)
                 scene = root.currentScene.name
             for (var i:int = root.numChildren - 1; i >= 0; i--) {
-                if (!root.getChildAt(i)["isTransition"]) {
+                var elem:* = StageMC.root.getChildAt(i)
+                if (!(elem is MovieClip))
+                    continue
+                var is_transition:* = elem["isTransition"]
+                if (is_transition != undefined && !is_transition) {
                     root.removeChildAt(i)
                 }
             }

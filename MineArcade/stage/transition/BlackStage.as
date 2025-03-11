@@ -14,6 +14,7 @@ package MineArcade.stage.transition {
                 if (bmc.alpha >= 1) {
                     bmc.removeEventListener(Event.ENTER_FRAME, transitionIn)
                     bmc.addEventListener(Event.ENTER_FRAME, transitionMaintain)
+                    ClearStage()
                 }
             }
             function transitionMaintain(_:Event):void {
