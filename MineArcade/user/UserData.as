@@ -7,7 +7,8 @@ package MineArcade.user {
         public var nickname:String;
         public var password:String;
         public var money:Number;
-        public var power:Number
+        public var power:Number;
+        public var points:Number;
         public var level:Number;
         public var exp:Number;
         public var exp_upgrade:Number;

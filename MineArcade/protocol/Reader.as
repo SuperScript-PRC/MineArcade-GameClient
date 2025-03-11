@@ -78,6 +78,7 @@ package MineArcade.protocol {
             var uuid:String = socket.readUTF();
             var money:Number = socket.readDouble();
             var power:Number = socket.readInt();
+            var points:Number = socket.readInt();
             var level:Number = socket.readInt();
             var exp:Number = socket.readInt();
             var exp_upgrade:Number = socket.readInt();
@@ -85,6 +86,7 @@ package MineArcade.protocol {
                     UUID: uuid,
                     Money: money,
                     Power: power,
+                    Points:points,
                     Level: level,
                     Exp: exp,
                     ExpUpgrade: exp_upgrade}

@@ -15,7 +15,7 @@ package MineArcade.stage.animations {
             colorTransform.greenMultiplier = cloud_gray;
             colorTransform.blueMultiplier = cloud_gray;
             cloud_mc.transform.colorTransform = colorTransform;
-            StageMC.stage.addChild(cloud_mc);
+            StageMC.root.addChild(cloud_mc);
 
         }
     }

@@ -22,5 +22,16 @@ package MineArcade.mcs_getter {
         public static function resumeRoot():void {
             root.isPaused = false
         }
+
+        public static function safeGoto(frame:int, scene:*):void {
+            if (scene == undefined)
+                scene = root.currentScene.name
+            for (var i:int = root.numChildren - 1; i >= 0; i--) {
+                if (!root.getChildAt(i)["isTransition"]) {
+                    root.removeChildAt(i)
+                }
+            }
+            root.gotoAndStop(frame, scene)
+        }
     }
 }
