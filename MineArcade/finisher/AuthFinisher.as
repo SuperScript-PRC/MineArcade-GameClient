@@ -16,6 +16,14 @@ package MineArcade.finisher
 
         public function finishAuth(username:String, password:String, ok_cb:Function):void
         {
+            if (username.length > 20) {
+                TipWindow.warning("用户名异常")
+                return
+            }
+            if (password.length > 20) {
+                TipWindow.warning("密码异常")
+                return
+            }
             auth_machine.Auth(username, password, function(success:Boolean, msg:String, status_code:int):void{
                 if (success) {
                     TopMessage.show("登录成功, 欢迎 " + username)

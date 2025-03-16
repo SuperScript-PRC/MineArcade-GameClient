@@ -3,3 +3,6 @@
 *.exe
 *.swf
 asconfig.json
+
+# VSCode
+.vscode
