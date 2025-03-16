@@ -9,7 +9,7 @@ package MineArcade.protocol {
             super(conn.socket);
         }
 
-        public function addPacketListener(pkID:Number, listener:Function):void {
+        public function addPacketListener(pkID:int, listener:Function):void {
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
                 listeners = [];
@@ -19,11 +19,11 @@ package MineArcade.protocol {
             }
         }
 
-        public function removePacketListener(pkID:Number, listener:Function):void {
+        public function removePacketListener(pkID:int, listener:Function):void {
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
                 return;
-            for (var i:Number = 0; i < listeners.length; i++) {
+            for (var i:int = 0; i < listeners.length; i++) {
                 if (listeners[i] == listener) {
                     listeners.splice(i, 1);
                     if (listeners.length == 0) {
@@ -34,7 +34,7 @@ package MineArcade.protocol {
             }
         }
 
-        public function addPacketListenerOnce(pkID:Number, listener:Function):void {
+        public function addPacketListenerOnce(pkID:int, listener:Function):void {
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
                 listeners = [];
@@ -46,7 +46,7 @@ package MineArcade.protocol {
             packet_listeners[pkID] = listeners;
         }
 
-        public function addPacketListenerOnceWithTimeout(pkID:Number, listener:Function, timeout:int, timeout_cb:Function):void {
+        public function addPacketListenerOnceWithTimeout(pkID:int, listener:Function, timeout:int, timeout_cb:Function):void {
             var listeners:* = packet_listeners[pkID]
             var ok:Boolean = false;
             if (listeners == undefined)

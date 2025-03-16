@@ -14,6 +14,7 @@ package MineArcade.protocol {
             var buf:ByteArray = this.construct_writer(pk.ID());
             pk.Marshal(buf);
             this.socket.writeBytes(buf);
+            this.socket.flush()
         }
 
         private function construct_writer(pkID:Number):ByteArray {

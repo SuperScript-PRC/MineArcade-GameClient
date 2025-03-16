@@ -1,14 +1,14 @@
 package MineArcade.auth {
     import flash.utils.setTimeout;
-    import MineArcade.protocol.PacketIDs;
     import MineArcade.protocol.PacketHandler;
     import MineArcade.protocol.Writer;
+    import MineArcade.protocol.packets.ClientHandshake;
+    import MineArcade.protocol.packets.Pool;
 
     public class Handshake {
         private var login_resp_cb:Function;
         private var hooked_packet_listener:PacketHandler;
         private var hooked_packet_sender:Writer;
-        private const pkIDs:PacketIDs = new PacketIDs();
         private const HANDSHAKE_TIMEOUT_TIME:int = 5000;
 
         public function Handshake(pkt_sender:Writer, pkt_listener:PacketHandler):void {
@@ -17,9 +17,11 @@ package MineArcade.auth {
         }
 
         public function sendHandshake(cb:Function):void {
-            hooked_packet_sender.ClientHandshake(define.CLIENT_VERSION);
+            var pk:ClientHandshake = new ClientHandshake()
+            pk.ClientVersion = define.CLIENT_VERSION
+            hooked_packet_sender.WritePacket(pk);
             var getting:Boolean = false
-            hooked_packet_listener.addPacketListenerOnce(PacketIDs.IDServerHandshake, function(packet:Object):void {
+            hooked_packet_listener.addPacketListenerOnce(Pool.IDServerHandshake, function(packet:Object):void {
                 getting = true
                 cb(packet.Success, packet.ServerMessage)
             })

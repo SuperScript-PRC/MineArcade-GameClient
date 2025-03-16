@@ -2,8 +2,8 @@ package MineArcade.arcades.public_minearea {
     import flash.display.MovieClip;
     import MineArcade.core.Main;
     import flash.utils.ByteArray;
-    import MineArcade.protocol.PacketIDs;
     import MineArcade.fixer.IntervalContext;
+    import MineArcade.protocol.packets.Pool;
 
     public class MineAreaMap extends MovieClip {
         public var chunks:Vector.<Chunk> = new Vector.<Chunk>()
@@ -12,7 +12,7 @@ package MineArcade.arcades.public_minearea {
         public var client_player:WorldPlayer;
 
         public function Entry(playername:String):void {
-            Main.GCore.getPacketHander().addPacketListener(PacketIDs.IDPublicMineAreaChunk, this.handleChunk)
+            Main.GCore.getPacketHander().addPacketListener(Pool.IDPublicMineAreaChunk, this.handleChunk)
             IntervalContext.Create(this, this.chunksGC, 2000)
         }
 
