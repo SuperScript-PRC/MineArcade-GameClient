@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.utils.ByteArray;
+    import flash.net.Socket;
 
     public class SimpleEvent implements ClientPacket, ServerPacket {
         public var EventType:int;
@@ -14,12 +14,12 @@ package MineArcade.protocol.packets {
             return Pool.IDSimpleEvent
         }
 
-        public function Unmarshal(r:ByteArray):void {
+        public function Unmarshal(r:Socket):void {
             this.EventType = r.readInt();
             this.EventData = r.readInt();
         }
 
-        public function Marshal(w:ByteArray):void {
+        public function Marshal(w:Socket):void {
             w.writeInt(this.EventType);
             w.writeInt(this.EventData);
         }

@@ -12,29 +12,40 @@ package MineArcade.core {
         private var pk_writer:Writer;
         private var root:MovieClip = StageMC.root;
         private var userinfo:UserData;
+        private var current_gametype:int = -1;
 
         public function CorArcade() {
-            conn = new Connection("127.0.0.1", 6000);
-            pk_handler = new PacketHandler(conn);
-            pk_writer = new Writer(conn.socket);
-            userinfo = new UserData(this);
-            conn.hookHandler(pk_handler)
+            this.conn = new Connection("127.0.0.1", 6000);
+            this.pk_handler = new PacketHandler(conn);
+            this.pk_writer = new Writer(conn.socket);
+            this.userinfo = new UserData(this);
+            this.conn.hookHandler(pk_handler)
         }
 
         public function getPacketHander():PacketHandler {
-            return pk_handler;
+            return this.pk_handler;
         }
 
         public function getPacketWriter():Writer {
-            return pk_writer;
+            return this.pk_writer;
         }
 
         public function getConnection():Connection {
-            return conn;
+            return this.conn;
         }
 
         public function getUserData():UserData {
-            return userinfo;
+            return this.userinfo;
+        }
+
+        public function SetCurrentGameType(gametype:int):void
+        {
+            this.current_gametype = gametype
+        }
+
+        public function GetCurrentGameType():int
+        {
+            return this.current_gametype
         }
     }
 }

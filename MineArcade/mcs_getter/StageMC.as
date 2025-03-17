@@ -23,7 +23,7 @@ package MineArcade.mcs_getter {
             root.isPaused = false
         }
 
-        public static function safeGoto(frame:int, scene:*):void {
+        public static function safeGotoAndStop(frame:int, scene:*):void {
             if (scene == undefined)
                 scene = root.currentScene.name
             for (var i:int = root.numChildren - 1; i >= 0; i--) {
@@ -36,6 +36,21 @@ package MineArcade.mcs_getter {
                 }
             }
             root.gotoAndStop(frame, scene)
+        }
+
+        public static function safeGotoAndPlay(frame:int, scene:*):void {
+            if (scene == undefined)
+                scene = root.currentScene.name
+            for (var i:int = root.numChildren - 1; i >= 0; i--) {
+                var elem:* = StageMC.root.getChildAt(i)
+                if (!(elem is MovieClip))
+                    continue
+                var is_transition:* = elem["isTransition"]
+                if (is_transition != undefined && !is_transition) {
+                    root.removeChildAt(i)
+                }
+            }
+            root.safeGotoAndPlay(frame, scene)
         }
     }
 }

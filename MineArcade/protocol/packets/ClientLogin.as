@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.utils.ByteArray;
+    import flash.net.Socket;
 
     public class ClientLogin implements ClientPacket {
         public var Username: String;
@@ -14,7 +14,7 @@ package MineArcade.protocol.packets {
             return Pool.IDClientLogin
         }
 
-        public function Marshal(w:ByteArray):void{
+        public function Marshal(w:Socket):void{
             w.writeUTF(this.Username)
             w.writeUTF(this.Password)
         }

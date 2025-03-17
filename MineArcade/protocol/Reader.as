@@ -7,13 +7,12 @@ package MineArcade.protocol {
 
     public class Reader {
         private var socket:Socket;
-        private var buf:ByteArray = new ByteArray();
 
         public function Reader(sock:Socket) {
             socket = sock;
         }
 
-        public static function readArray(reader:ByteArray, unmarshaler:Function):Array {
+        public static function readArray(reader:Socket, unmarshaler:Function):Array {
             var arr:Array = [];
             var arr_length:int = reader.readInt();
             for (var i:Number = 0; i < arr_length; i++) {
@@ -23,41 +22,47 @@ package MineArcade.protocol {
         }
 
         public function ReadPacket():ServerPacket {
-            if (this.buf.bytesAvailable == 0)
-                // 读完了内容, 进行 GC
-                // TODO
-                this.buf = new ByteArray()
-            var pkID:int = this.socket.readInt();
-            this.socket.readBytes(buf);
             var pk:ServerPacket;
+            var pkID:int = this.socket.readInt();
             switch (pkID) {
                 case Pool.IDServerHandshake:
                     pk = new ServerHandshake();
+                    break;
                 case Pool.IDClientLoginResp:
                     pk = new ClientLoginResp();
+                    break;
                 case Pool.IDKickClient:
                     pk = new KickClient();
+                    break;
                 case Pool.IDDialLagResp:
                     pk = new DialLagResp();
+                    break;
                 case Pool.IDPlayerBasics:
                     pk = new PlayerBasics();
+                    break;
                 case Pool.IDBackpackResponse:
                     pk = new BackpackResponse();
+                    break;
                 case Pool.IDSimpleEvent:
                     pk = new SimpleEvent();
+                    break;
                 case Pool.IDPublicMineAreaChunk:
                     pk = new PublicMineAreaChunk();
+                    break;
                 case Pool.IDPublicMineareaBlockEvent:
                     pk = new PublicMineareaBlockEvent();
+                    break;
                 case Pool.IDPublicMineareaPlayerActorData:
                     pk = new PublicMineareaPlayerActorData();
+                    break;
                 case Pool.IDArcadeEntryResponse:
                     pk = new ArcadeEntryResponse();
+                    break;
                 default:
                     trace("[PacketHandler] Unknown packet ID: " + pkID);
                     return null;
             }
-            pk.Unmarshal(this.buf);
+            pk.Unmarshal(this.socket);
             return pk
         }
     }

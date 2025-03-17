@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.utils.ByteArray;
+    import flash.net.Socket;
 
     public class PublicMineareaBlockEvent implements ClientPacket, ServerPacket {
         public var BlockX:int;
@@ -18,14 +18,14 @@ package MineArcade.protocol.packets {
             return Pool.IDPublicMineareaBlockEvent
         }
 
-        public function Unmarshal(r:ByteArray):void {
+        public function Unmarshal(r:Socket):void {
             this.BlockX = r.readInt();
             this.BlockY = r.readInt();
             this.Action = r.readByte();
             this.NewBlock = r.readByte();
         }
 
-        public function Marshal(w:ByteArray):void {
+        public function Marshal(w:Socket):void {
             w.writeInt(this.BlockX);
             w.writeInt(this.BlockY);
             w.writeByte(this.Action);

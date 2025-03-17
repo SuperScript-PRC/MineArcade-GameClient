@@ -1,6 +1,8 @@
-package MineArcade.protocol {
+﻿package MineArcade.protocol {
 
     import flash.utils.setTimeout;
+    import flash.display.MovieClip;
+    import MineArcade.protocol.packets.ServerPacket;
 
     public class PacketHandler extends Reader {
         private var packet_listeners:Object = {};
@@ -17,6 +19,17 @@ package MineArcade.protocol {
                 listeners.push(listener);
                 packet_listeners[pkID] = listeners;
             }
+        }
+
+        public function addPacketListenerBoundingMC(mc:MovieClip, pkID:int, listener:Function):void {
+            function _listener(packet:Object):void {
+                if (mc.root == null) {
+                    removePacketListener(pkID, _listener);
+                    return;
+                }
+                listener(packet);
+            }
+            addPacketListener(pkID, _listener)
         }
 
         public function removePacketListener(pkID:int, listener:Function):void {
@@ -66,12 +79,39 @@ package MineArcade.protocol {
             }, timeout)
         }
 
-        public function handlePacket(pk:Object):void {
-            var listeners:* = packet_listeners[pk.ID]
+        public function addPacketListenerOnceWithCondition(pkID:int, listener:Function, timeout:int = -1, timeout_cb:* = undefined):void {
+            var listeners:* = packet_listeners[pkID]
+            var ok:Boolean = false;
+            if (listeners == undefined)
+                listeners = [];
+            var fnc:Function = function(packet:Object):void {
+                var res:Boolean = listener(packet);
+                if (res) {
+                    removePacketListener(pkID, fnc);
+                    ok = true;
+                }
+            }
+            listeners.push(fnc);
+            packet_listeners[pkID] = listeners;
+            if (timeout > 0 && timeout_cb) {
+                setTimeout(function():void {
+                    if (!ok) {
+                        timeout_cb();
+                        removePacketListener(pkID, fnc);
+                    }
+                }, timeout)
+            }
+        }
+
+        public function handlePacket(pk:ServerPacket):void {
+            var pkID:int = pk.ID()
+            var listeners:* = packet_listeners[pkID]
             if (listeners is Array)
                 listeners.forEach(function(listener:Function, index:int, arr:Array):void {
-                    listener(pk.Packet);
-                });
+                    listener(pk);
+                })
+            else
+            trace("[Warning] No handler to handle packet ID=" + pkID)
         }
 
     }

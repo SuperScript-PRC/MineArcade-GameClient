@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.utils.ByteArray;
+    import flash.net.Socket;
 
     public class KickClient implements ServerPacket {
         public var Message:String;
@@ -14,7 +14,7 @@ package MineArcade.protocol.packets {
             return Pool.IDKickClient
         }
 
-        public function Unmarshal(r:ByteArray):void {
+        public function Unmarshal(r:Socket):void {
             Message = r.readUTF()
             StatusCode = r.readInt()
         }

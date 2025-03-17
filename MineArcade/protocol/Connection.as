@@ -4,6 +4,7 @@ package MineArcade.protocol {
     import flash.events.ProgressEvent;
     import flash.events.SecurityErrorEvent;
     import flash.net.Socket;
+    import MineArcade.protocol.packets.ServerPacket;
 
     public class Connection {
         public var socket:Socket;
@@ -59,7 +60,7 @@ package MineArcade.protocol {
 
         private function onData(event:ProgressEvent):void {
             while (socket.bytesAvailable > 0) {
-                var pk:Object = this.pk_handler.ReadPacket();
+                var pk:ServerPacket = this.pk_handler.ReadPacket();
                 this.pk_handler.handlePacket(pk);
             }
         }

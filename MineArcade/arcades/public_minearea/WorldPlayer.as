@@ -8,17 +8,19 @@ package MineArcade.arcades.public_minearea {
 
     public class WorldPlayer extends MovieClip {
         public var playername:String;
+        public var uuid:String
         public var x_speed:Number = 0;
         public var y_speed:Number = 0;
         public var is_cli_player:Boolean;
         private var walk_a:Number = 0;
         private var map:MineAreaMap;
 
-        public function WorldPlayer(playername:String, is_cli_player:Boolean, map:MineAreaMap) {
+        public function WorldPlayer(playername:String, uuid:String, is_cli_player:Boolean, map:MineAreaMap) {
             super();
-            this.map = map
             this.playername = playername
+            this.uuid = uuid
             this.is_cli_player = is_cli_player
+            this.map = map
             this._TempDraw()
             EventContext.Create(this, StageMC.root, KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
                 if (e.keyCode == Keyboard.LEFT)
@@ -72,11 +74,11 @@ package MineArcade.arcades.public_minearea {
             var right:Boolean = false;
             var up:Boolean = false;
             var down:Boolean = false;
-            for (var chunk:Chunk in this.map.chunks) {
+            for each (var chunk:Chunk in this.map.chunks) {
                 if (this.hitTestObject(chunk)) {
                     var chunk_x:Number = chunk.x
                     var chunk_y:Number = chunk.y
-                    for (var block:MineBlock in chunk.blocks) {
+                    for each (var block:MineBlock in chunk.blocks) {
                         if (block.id == 0)
                             continue;
                         var block_left_x:Number = chunk_x + block.x

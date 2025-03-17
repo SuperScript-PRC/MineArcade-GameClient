@@ -33,7 +33,7 @@ package MineArcade.arcades.public_minearea {
         public static function loadTextures():void {
             var need_load_textures:Object = getNeedLoadTextures();
             var all_textures_num:int = need_load_textures.length;
-            for (var k:String in textures) {
+            for each (var k:String in textures) {
                 TextureLoader.loadTexture("resources/images/blocks/" + need_load_textures[k] + ".png", function(c:Bitmap):void {
                     textures[k] = c;
                 });

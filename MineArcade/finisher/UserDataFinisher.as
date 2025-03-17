@@ -6,6 +6,7 @@ package MineArcade.finisher {
     import MineArcade.mcs_getter.StageMC;
     import MineArcade.core.Main;
     import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PlayerBasics;
 
     public class UserDataFinisher {
         private var cor:CorArcade;
@@ -16,7 +17,7 @@ package MineArcade.finisher {
 
         public function finishUserData(ok_cb:Function):void {
             var ok:Boolean = false;
-            cor.getPacketHander().addPacketListenerOnceWithTimeout(Pool.IDPlayerBasics, function(pk:Object):void {
+            cor.getPacketHander().addPacketListenerOnceWithTimeout(Pool.IDPlayerBasics, function(pk:PlayerBasics):void {
                 var ud:UserData = cor.getUserData()
                 ud.nickname = pk.Nickname
                 ud.uuid = pk.UUID

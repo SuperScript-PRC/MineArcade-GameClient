@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.utils.ByteArray;
+    import flash.net.Socket;
 
     public class ClientLoginResp implements ServerPacket {
         public var Success:Boolean;
@@ -16,7 +16,7 @@ package MineArcade.protocol.packets {
             return Pool.IDClientLoginResp
         }
 
-        public function Unmarshal(r:ByteArray):void {
+        public function Unmarshal(r:Socket):void {
             Success = r.readBoolean()
             Message = r.readUTF()
             StatusCode = r.readInt()

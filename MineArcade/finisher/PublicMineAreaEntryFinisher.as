@@ -11,17 +11,20 @@ package MineArcade.finisher {
     import MineArcade.utils.uuid4;
 
     public function PublicMineAreaEntryFinisher(core:CorArcade):void {
-        var uuid:String = uuid4()
-        core.getPacketHander().addPacketListenerOnceWithTimeout(Pool.IDArcadeEntryResponse, function(pk:ArcadeEntryResponse):void {
-            if (pk.Success) {
-                CutScene.cutScene(function():Boolean {
-                    StageMC.safeGotoAndStop(1, "PublicMineArea");
-                    Entry(core)
-                    return true
-                })
-            } else {
-                TopMessage.show("加入游戏失败..")
+        var gen_uuid:String = uuid4()
+        core.getPacketHander().addPacketListenerOnceWithCondition(Pool.IDArcadeEntryResponse, function(pk:ArcadeEntryResponse):Boolean {
+            if (pk.ResponseUUID == gen_uuid) {
+                if (pk.Success) {
+                    CutScene.cutScene(function():Boolean {
+                        StageMC.safeGotoAndStop(1, "PublicMineArea");
+                        Entry(core)
+                        return true
+                    })
+                } else {
+                    TopMessage.show("加入游戏失败..")
+                }
             }
+            return false
         }, 10, function():void {
             TopMessage.show("加入游戏失败: 请求超时")
         })
