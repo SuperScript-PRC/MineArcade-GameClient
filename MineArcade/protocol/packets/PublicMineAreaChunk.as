@@ -6,6 +6,12 @@ package MineArcade.protocol.packets {
         public var ChunkY:int;
         public var ChunkData:ByteArray;
 
+        public function PublicMineAreaChunk(ChunkX:int = undefined, ChunkY:int = undefined, ChunkData:ByteArray = undefined):void {
+            this.ChunkX = ChunkX
+            this.ChunkY = ChunkY
+            this.ChunkData = ChunkData
+        }
+
         public function ID():int {
             return Pool.IDPublicMineAreaChunk
         }

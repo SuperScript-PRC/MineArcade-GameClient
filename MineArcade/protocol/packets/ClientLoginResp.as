@@ -1,5 +1,4 @@
-package MineArcade.protocol.packets
-{
+package MineArcade.protocol.packets {
     import flash.utils.ByteArray;
 
     public class ClientLoginResp implements ServerPacket {
@@ -7,11 +6,17 @@ package MineArcade.protocol.packets
         public var Message:String;
         public var StatusCode:int;
 
-        public function ID():int{
+        public function ClientLoginResp(Success:Boolean = undefined, Message:String = undefined, StatusCode:int = undefined):void {
+            this.Success = Success
+            this.Message = Message
+            this.StatusCode = StatusCode
+        }
+
+        public function ID():int {
             return Pool.IDClientLoginResp
         }
 
-        public function Unmarshal(r:ByteArray):void{
+        public function Unmarshal(r:ByteArray):void {
             Success = r.readBoolean()
             Message = r.readUTF()
             StatusCode = r.readInt()

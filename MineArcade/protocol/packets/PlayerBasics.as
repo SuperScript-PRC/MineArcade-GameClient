@@ -1,5 +1,4 @@
-package MineArcade.protocol.packets
-{
+package MineArcade.protocol.packets {
     import flash.utils.ByteArray;
 
     public class PlayerBasics implements ServerPacket {
@@ -12,11 +11,19 @@ package MineArcade.protocol.packets
         public var Exp:int;
         public var ExpUpgrade:int;
 
-        public function ID():int{
+        public function PlayerBasics(Nickname:String = undefined, UUID:String = undefined, Money:Number = undefined, Power:int = undefined, Points:int = undefined, Level:int = undefined, Exp:int = undefined, ExpUpgrade:int = undefined):void {
+            this.Nickname = Nickname
+            this.UUID = UUID
+            this.Money = Money
+            this.Power = Power
+            this.Points = Points
+        }
+
+        public function ID():int {
             return Pool.IDPlayerBasics
         }
 
-        public function Unmarshal(r:ByteArray):void{
+        public function Unmarshal(r:ByteArray):void {
             this.Nickname = r.readUTF();
             this.UUID = r.readUTF();
             this.Money = r.readDouble();

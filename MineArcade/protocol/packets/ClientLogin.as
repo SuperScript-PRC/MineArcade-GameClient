@@ -5,6 +5,11 @@ package MineArcade.protocol.packets {
         public var Username: String;
         public var Password: String;
 
+        public function ClientLogin(Username:String=undefined, Password:String=undefined):void{
+            this.Username = Username
+            this.Password = Password
+        }
+
         public function ID():int{
             return Pool.IDClientLogin
         }

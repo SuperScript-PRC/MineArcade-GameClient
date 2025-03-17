@@ -5,6 +5,10 @@ package MineArcade.protocol.packets {
     public class BackpackResponse implements ServerPacket{
         public var Items:Array;
 
+        public function BackpackResponse(Items:Array=undefined):void {
+            this.Items = Items
+        }
+
         public function ID():int {
             return Pool.IDBackpackResponse
         }

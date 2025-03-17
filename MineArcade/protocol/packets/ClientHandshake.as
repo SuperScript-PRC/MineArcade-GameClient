@@ -5,6 +5,10 @@ package MineArcade.protocol.packets
     public class ClientHandshake implements ClientPacket {
         public var ClientVersion: int;
 
+        public function ClientHandshake(ClientVersion:int=undefined):void{
+            this.ClientVersion = ClientVersion
+        }
+
         public function ID():int{
             return Pool.IDClientHandshake
         }

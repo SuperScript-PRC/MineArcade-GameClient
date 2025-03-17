@@ -6,6 +6,12 @@ package MineArcade.protocol.packets {
         public var EntryID:String;
         public var RequestUUID:String;
 
+        public function ArcadeEntryRequest(ArcadeGameType:int = undefined, EntryID:String = undefined, RequestUUID:String = undefined):void {
+            this.ArcadeGameType = ArcadeGameType
+            this.EntryID = EntryID
+            this.RequestUUID = RequestUUID
+        }
+
         public function ID():int {
             return Pool.IDArcadeEntryRequest
         }
