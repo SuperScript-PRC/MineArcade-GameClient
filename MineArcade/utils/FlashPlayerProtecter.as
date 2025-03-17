@@ -1,4 +1,4 @@
-package MineArcade.protecter
+package MineArcade.utils
 {
     import flash.ui.ContextMenu;
     import MineArcade.mcs_getter.StageMC;

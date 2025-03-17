@@ -4,7 +4,7 @@ package MineArcade.core {
     import MineArcade.mcs_getter.StageMC;
     import flash.utils.setInterval;
     import flash.utils.clearInterval;
-    import MineArcade.protecter.FlashPlayerProtecter;
+    import MineArcade.utils.FlashPlayerProtecter;
 
     public class Main {
         public static var GCore:CorArcade;
