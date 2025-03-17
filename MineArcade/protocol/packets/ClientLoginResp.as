@@ -18,8 +18,10 @@ package MineArcade.protocol.packets {
 
         public function Unmarshal(r:Socket):void {
             Success = r.readBoolean()
+            trace(Success)
             Message = r.readUTF()
-            StatusCode = r.readInt()
+            trace(Message)
+            StatusCode = r.readByte()
         }
     }
 }

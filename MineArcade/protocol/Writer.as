@@ -1,5 +1,4 @@
 package MineArcade.protocol {
-    import flash.utils.ByteArray;
     import flash.net.Socket;
     import MineArcade.protocol.packets.ClientPacket;
 
