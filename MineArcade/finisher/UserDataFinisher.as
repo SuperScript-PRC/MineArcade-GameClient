@@ -1,11 +1,11 @@
 package MineArcade.finisher {
     import flash.utils.setTimeout;
     import MineArcade.core.CorArcade;
-    import MineArcade.protocol.PacketIDs;
     import MineArcade.user.UserData;
     import MineArcade.gui.TipWindow;
     import MineArcade.mcs_getter.StageMC;
     import MineArcade.core.Main;
+    import MineArcade.protocol.packets.Pool;
 
     public class UserDataFinisher {
         private var cor:CorArcade;
@@ -16,7 +16,7 @@ package MineArcade.finisher {
 
         public function finishUserData(ok_cb:Function):void {
             var ok:Boolean = false;
-            cor.getPacketHander().addPacketListenerOnceWithTimeout(PacketIDs.IDPlayerBasics, function(pk:Object):void {
+            cor.getPacketHander().addPacketListenerOnceWithTimeout(Pool.IDPlayerBasics, function(pk:Object):void {
                 var ud:UserData = cor.getUserData()
                 ud.nickname = pk.Nickname
                 ud.uuid = pk.UUID
