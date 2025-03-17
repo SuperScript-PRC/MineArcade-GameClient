@@ -7,6 +7,7 @@ package MineArcade.auth {
     import MineArcade.core.CorArcade;
     import MineArcade.protocol.packets.Pool;
     import MineArcade.protocol.packets.ClientLogin;
+    import MineArcade.protocol.packets.ClientLoginResp;
 
     public class Authentication {
         private var socket:Socket;
@@ -20,7 +21,7 @@ package MineArcade.auth {
         }
 
         public function Auth(username:String, password:String, login_resp_cb:Function):void {
-            hooked_packet_handler.addPacketListenerOnce(Pool.IDClientLoginResp, function(pk:Object):void {
+            hooked_packet_handler.addPacketListenerOnce(Pool.IDClientLoginResp, function(pk:ClientLoginResp):void {
                 login_resp_cb(pk.Success, pk.Message, pk.StatusCode)
             });
             var pk:ClientLogin = new ClientLogin()
