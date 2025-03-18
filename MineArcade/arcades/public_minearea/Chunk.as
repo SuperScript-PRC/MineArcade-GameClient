@@ -18,7 +18,10 @@ package MineArcade.arcades.public_minearea {
             var i_x:int, i_y:int;
             for (i_x = 0; i_x < 16; i_x++) {
                 for (i_y = 0; i_y < 16; i_y++) {
-                    var b:MineBlock = Blocks.GetBlock(bdata.readByte())(i_x * 32, i_y * 32)
+                    var bt_type:int = bdata.readByte()
+                    var bt:Class = Blocks.GetBlock(bt_type)
+                    var b:MineBlock = new bt(i_x * 32, i_y * 32)
+                    trace("Load block " + b + " at " + b.X + ", " + b.Y)
                     this.addChild(b)
                     blocks.push(b)
                 }
@@ -26,9 +29,7 @@ package MineArcade.arcades.public_minearea {
         }
 
         public function GetToPlayerDistance(player:WorldPlayer):Number {
-            var center_x:Number = this.x + 256
-            var center_y:Number = this.y + 256
-            return Math.sqrt(Math.pow((center_x - player.x), 2) + Math.pow((center_y - player.y), 2))
+            return Math.sqrt(Math.pow((this.center_x - player.x), 2) + Math.pow((this.center_y - player.y), 2))
         }
 
         public function get center_x():Number {

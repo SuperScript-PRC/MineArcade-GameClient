@@ -5,6 +5,7 @@ package MineArcade.stage
 
     public class MakeTop {
         public static function top(mc:MovieClip):void {
+            if (mc.root == null) return
             StageMC.root.removeChild(mc)
             StageMC.root.addChild(mc)
         }

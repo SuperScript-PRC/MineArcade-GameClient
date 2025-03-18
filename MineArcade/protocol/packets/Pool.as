@@ -14,8 +14,9 @@ package MineArcade.protocol.packets {
         public static const IDPublicMineAreaChunk:int = 11
         public static const IDPublicMineareaBlockEvent:int = 12
         public static const IDPublicMineareaPlayerActorData:int = 13
-        public static const IDArcadeEntryRequest: int = 14
-        public static const IDArcadeEntryResponse: int = 15
+        public static const IDArcadeEntryRequest:int = 14
+        public static const IDArcadeEntryResponse:int = 15
+        public static const IDStartGame:int = 16
     }
 }
 

@@ -5,6 +5,7 @@ package MineArcade.arcades.public_minearea {
     import MineArcade.mcs_getter.StageMC;
     import flash.events.Event;
     import flash.events.KeyboardEvent;
+    import MineArcade.protocol.packets.PublicMineareaPlayerActorData;
 
     public class WorldPlayer extends MovieClip {
         public var playername:String;
@@ -22,26 +23,34 @@ package MineArcade.arcades.public_minearea {
             this.is_cli_player = is_cli_player
             this.map = map
             this._TempDraw()
-            EventContext.Create(this, StageMC.root, KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
-                if (e.keyCode == Keyboard.LEFT)
-                    walk_a = -0.2
-                else if (e.keyCode == Keyboard.RIGHT)
-                    walk_a = 0.2
-                else if (e.keyCode == Keyboard.SPACE)
-                    Jump()
-            })
-            EventContext.Create(this, StageMC.root, KeyboardEvent.KEY_UP, function(e:KeyboardEvent):void {
-                if (e.keyCode == Keyboard.LEFT)
-                    walk_a = 0
-                else if (e.keyCode == Keyboard.RIGHT)
-                    walk_a = 0
-            })
             if (this.is_cli_player) {
                 // 其他玩家的移动只依赖服务器传输来的 Actor
-                EventContext.Create(this, StageMC.root, Event.ENTER_FRAME, function(e:Event):void {
+                EventContext.Create(this, StageMC.root, KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
+                    if (e.keyCode == Keyboard.LEFT)
+                        walk_a = -0.2
+                    else if (e.keyCode == Keyboard.RIGHT)
+                        walk_a = 0.2
+                    else if (e.keyCode == Keyboard.SPACE)
+                        Jump()
+                })
+                EventContext.Create(this, StageMC.root, KeyboardEvent.KEY_UP, function(e:KeyboardEvent):void {
+                    if (e.keyCode == Keyboard.LEFT)
+                        walk_a = 0
+                    else if (e.keyCode == Keyboard.RIGHT)
+                        walk_a = 0
+                })
+                EventContext.Create(this, StageMC.stage, Event.ENTER_FRAME, function(e:Event):void {
                     ExecuteMove()
+                    map.MapMoveRelative()
                 })
             }
+        }
+
+        public function UpdateFromPacket(pk:PublicMineareaPlayerActorData):void {
+            // TODO: Action 没有被利用
+            this.x = pk.X * BLOCK_SIZE
+            this.y = pk.Y * BLOCK_SIZE
+            // trace("updated at " + x + ", " + y + ", orig at " + pk.X + ", " + pk.Y)
         }
 
         private function _TempDraw():void {

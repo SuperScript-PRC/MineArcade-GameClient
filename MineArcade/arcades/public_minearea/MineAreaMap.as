@@ -47,37 +47,36 @@ package MineArcade.arcades.public_minearea {
             delete players[uuid]
         }
 
-        public function SetPlayerPos(playerUUID:String, x:Number, y:Number):void {
-            var wp:WorldPlayer = players[playerUUID]
-            if (wp) {
-                wp.x = x * 32
-                wp.y = y * 32
-            } else {
-                trace("[PublicMineArea] 警告: 玩家 UUID=" + playerUUID + " 不存在。")
-            }
+        public function MapMoveRelative():void {
+            var p:WorldPlayer = this.client_player
+            this.x = StageData.StageWidth / 2 - p.x
+            this.y = StageData.StageHeight / 2 - p.y
         }
 
-        public function handleChunk(pk:PublicMineAreaChunk):void {
+        private function handleChunk(pk:PublicMineAreaChunk):void {
             var x:int = pk.ChunkX
             var y:int = pk.ChunkY
             var chunk_bts:ByteArray = pk.ChunkData
             var chk:Chunk = new Chunk(x, y, chunk_bts)
+            trace("chunk loaded at " + x + ", " + y)
             this.addChunk(chk)
         }
 
-        public function handlePlayer(pk:PublicMineareaPlayerActorData):void {
+        private function handlePlayer(pk:PublicMineareaPlayerActorData):void {
             if (pk.Action == 1)
                 this.AddPlayer(pk.Nickname, pk.UUIDStr, pk.X, pk.Y, pk.UUIDStr == this.client_player.uuid)
             else if (pk.Action == 2)
                 this.RemovePlayer(pk.UUIDStr)
-            else if (pk.Action == 0)
-                this.SetPlayerPos(pk.UUIDStr, pk.X, pk.Y)
-        }
-
-        private function mapMoveRelative():void{
-            var p:WorldPlayer = this.client_player
-            this.x = StageData.StageWidth / 2 - p.x
-            this.y = StageData.StageHeight / 2 - p.y
+            else if (pk.Action == 0) {
+                var wp:WorldPlayer = players[pk.UUIDStr]
+                if (wp) {
+                    wp.UpdateFromPacket(pk)
+                } else {
+                    trace("[PublicMineArea] 警告: 玩家 UUID=" + pk.UUIDStr + " 不存在。")
+                }
+            } else {
+                trace("[PublicMineArea] 警告: 暂时无法处理玩家行为类型: " + pk.Action)
+            }
         }
 
         private function addChunk(chk:Chunk):void {

@@ -25,9 +25,9 @@ package MineArcade.finisher {
                 }
             }
             return false
-        }, 10, function():void {
+        }, 10000, function():void {
             TopMessage.show("加入游戏失败: 请求超时")
         })
-        core.getPacketWriter().WritePacket(new ArcadeEntryRequest(GameType.PUBLIC_MINEAREA, "", ""))
+        core.getPacketWriter().WritePacket(new ArcadeEntryRequest(GameType.PUBLIC_MINEAREA, "", gen_uuid))
     }
 }

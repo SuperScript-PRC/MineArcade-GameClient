@@ -4,6 +4,8 @@ package MineArcade.finisher {
     import MineArcade.gui.TipWindow
     import MineArcade.gui.TopMessage
     import MineArcade.core.CorArcade;
+    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.KickClient;
 
     public class HandshakeFinisher {
         public function HandshakeFinisher(cor:CorArcade, ok_cb:Function) {
@@ -33,6 +35,11 @@ package MineArcade.finisher {
                     StageMC.root.gotoAndPlay(1, "Preload")
                 })
                 cor.getConnection().close()
+            })
+            cor.getPacketHander().addPacketListenerOnce(Pool.IDKickClient, function(p:KickClient):void{
+                TipWindow.error("您已被踢出游戏: " + p.Message, 400, 200, function():void {
+                    StageMC.safeGotoAndPlay(1, "Preload")
+                })
             })
             cor.getConnection().setListeners()
             TopMessage.show("正在连接到服务器..")

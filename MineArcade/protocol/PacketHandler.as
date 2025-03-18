@@ -32,26 +32,27 @@
             addPacketListener(pkID, _listener)
         }
 
-        public function removePacketListener(pkID:int, listener:Function):void {
+        public function removePacketListener(pkID:int, listener:Function):Boolean {
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
-                return;
+                return false;
             for (var i:int = 0; i < listeners.length; i++) {
                 if (listeners[i] == listener) {
                     listeners.splice(i, 1);
                     if (listeners.length == 0) {
                         delete packet_listeners[pkID];
                     }
-                    break;
+                    return true
                 }
             }
+            return false
         }
 
         public function addPacketListenerOnce(pkID:int, listener:Function):void {
             var listeners:* = packet_listeners[pkID]
             if (listeners == undefined)
                 listeners = [];
-            var fnc:Function = function(packet:Object):void {
+            var fnc:Function = function(packet:ServerPacket):void {
                 listener(packet);
                 removePacketListener(pkID, fnc);
             }
@@ -64,7 +65,7 @@
             var ok:Boolean = false;
             if (listeners == undefined)
                 listeners = [];
-            var fnc:Function = function(packet:Object):void {
+            var fnc:Function = function(packet:ServerPacket):void {
                 listener(packet);
                 removePacketListener(pkID, fnc);
                 ok = true;
@@ -84,16 +85,17 @@
             var ok:Boolean = false;
             if (listeners == undefined)
                 listeners = [];
-            var fnc:Function = function(packet:Object):void {
+            var fnc:Function = function(packet:ServerPacket):void {
                 var res:Boolean = listener(packet);
                 if (res) {
                     removePacketListener(pkID, fnc);
                     ok = true;
+                    trace("PK Handler: ok = true")
                 }
             }
             listeners.push(fnc);
             packet_listeners[pkID] = listeners;
-            if (timeout > 0 && timeout_cb) {
+            if (timeout > 0 && timeout_cb != undefined) {
                 setTimeout(function():void {
                     if (!ok) {
                         timeout_cb();
@@ -111,7 +113,7 @@
                     listener(pk);
                 })
             else
-            trace("[Warning] No handler to handle packet ID=" + pkID)
+                trace("[Warning] No handler to handle packet ID=" + pkID)
         }
 
     }
