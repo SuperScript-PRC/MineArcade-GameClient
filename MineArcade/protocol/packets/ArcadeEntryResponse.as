@@ -17,7 +17,7 @@ package MineArcade.protocol.packets {
         }
 
         public function Unmarshal(r:Socket):void {
-            this.ArcadeGameType = r.readInt();
+            this.ArcadeGameType = r.readByte();
             this.ResponseUUID = r.readUTF();
             this.Success = r.readBoolean();
         }
