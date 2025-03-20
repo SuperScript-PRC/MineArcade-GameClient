@@ -32,13 +32,8 @@ import MineArcade.arcades.public_minearea.MineBlock;
 import MineArcade.arcades.public_minearea.Textures;
 
 class Air extends MineBlock {
-    static const id:int = 0;
-    static const hard:int = 0;
-    static const texture_name:String = "air";
-    static const is_hidden:Boolean = true;
-
     public function Air(x:int, y:int) {
-        super(x, y);
+        super(x, y, 0, 0, "air", true);
     }
 
     public override function Digged():void {
@@ -47,111 +42,68 @@ class Air extends MineBlock {
 }
 
 class Stone extends MineBlock {
-    static const id:int = 1;
-    static const hard:int = 4;
-    static const texture_name:String = Textures.BlockTextures.Stone;
-
     public function Stone(x:int, y:int) {
-        super(x, y);
+        super(x, y, 1, 4, Textures.BlockTextures.Stone);
     }
 }
 
 class CoalOre extends MineBlock {
-    static const id:int = 2;
-    static const hard:int = 8;
-    static const texture_name:String = Textures.BlockTextures.CoalOre;
 
     public function CoalOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 2, 8, Textures.BlockTextures.CoalOre)
     }
 }
 
 class IronOre extends MineBlock {
-    static const id:int = 3;
-    static const hard:int = 12;
-    static const texture_name:String = Textures.BlockTextures.IronOre;
-
     public function IronOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 3, 12, Textures.BlockTextures.IronOre);
     }
 }
 
 class GoldOre extends MineBlock {
-    static const id:int = 4;
-    static const hard:int = 14;
-    static const texture_name:String = Textures.BlockTextures.GoldOre;
-
     public function GoldOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 4, 14, Textures.BlockTextures.GoldOre);
     }
 }
 
 class DiamondOre extends MineBlock {
-    static const id:int = 5;
-    static const hard:int = 16;
-    static const texture_name:String = Textures.BlockTextures.DiamondOre;
-
     public function DiamondOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 5, 16, Textures.BlockTextures.DiamondOre);
     }
 }
 
 class EmeraldOre extends MineBlock {
-    static const id:int = 6;
-    static const hard:int = 16;
-    static const texture_name:String = Textures.BlockTextures.EmeraldOre;
-
     public function EmeraldOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 6, 16, Textures.BlockTextures.EmeraldOre);
     }
 }
 
 class RedstoneOre extends MineBlock {
-    static const id:int = 7;
-    static const hard:int = 8;
-    static const texture_name:String = Textures.BlockTextures.RedstoneOre;
-
     public function RedstoneOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 7, 8, Textures.BlockTextures.RedstoneOre);
     }
 }
 
 class LapisOre extends MineBlock {
-    static const id:int = 8;
-    static const hard:int = 8;
-    static const texture_name:String = Textures.BlockTextures.LapisOre;
-
     public function LapisOre(x:int, y:int) {
-        super(x, y);
+        super(x, y, 8, 8, Textures.BlockTextures.LapisOre);
     }
 }
 
 class WoodTreasureChest extends MineBlock {
-    static const id:int = 9;
-    static const hard:int = 5;
-    static const texture_name:String = Textures.BlockTextures.WoodTreasureChest;
-
     public function WoodTreasureChest(x:int, y:int) {
-        super(x, y);
+        super(x, y, 9, 5, Textures.BlockTextures.WoodTreasureChest, true);
     }
 }
 
 class IronTreasureChest extends MineBlock {
-    static const id:int = 10;
-    static const hard:int = 10;
-    static const texture_name:String = Textures.BlockTextures.IronTreasureChest;
-
     public function IronTreasureChest(x:int, y:int) {
-        super(x, y);
+        super(x, y, 10, 10, Textures.BlockTextures.IronTreasureChest, true);
     }
 }
 
 class GoldTreasureChest extends MineBlock {
-    static const id:int = 11;
-    static const hard:int = 15;
-    static const texture_name:String = Textures.BlockTextures.GoldTreasureChest;
-
     public function GoldTreasureChest(x:int, y:int) {
-        super(x, y);
+        super(x, y, 11, 15, Textures.BlockTextures.GoldTreasureChest, true);
     }
 }

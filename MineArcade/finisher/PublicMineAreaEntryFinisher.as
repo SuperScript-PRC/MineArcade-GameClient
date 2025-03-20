@@ -20,6 +20,7 @@ package MineArcade.finisher {
                         Entry(core)
                         return true
                     })
+                    return true
                 } else {
                     TopMessage.show("加入游戏失败..")
                 }

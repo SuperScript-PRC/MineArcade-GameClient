@@ -9,7 +9,7 @@ package MineArcade.arcades.public_minearea {
     import MineArcade.define.StageData;
 
     public class MineAreaMap extends MovieClip {
-        public var chunks:Vector.<Chunk> = new Vector.<Chunk>()
+        public var chunks:Vector.<Chunk> = new Vector.<Chunk>(1024)
         public var G:Number = 0.5
         public var players:Object = {}
         public var client_player:WorldPlayer
@@ -17,13 +17,11 @@ package MineArcade.arcades.public_minearea {
 
         public function MineAreaMap(core:CorArcade):void {
             this.core = core
-            this.Entry()
         }
 
         public function Entry():void {
             this.core.getPacketHander().addPacketListenerBoundingMC(this, Pool.IDPublicMineAreaChunk, this.handleChunk)
             this.core.getPacketHander().addPacketListenerBoundingMC(this, Pool.IDPublicMineareaPlayerActorData, this.handlePlayer)
-            IntervalContext.Create(this, this.chunksGC, 2000)
         }
 
         public function AddPlayer(playername:String, uuid:String, x:int, y:int, is_client_player:Boolean):void {
@@ -49,17 +47,20 @@ package MineArcade.arcades.public_minearea {
 
         public function MapMoveRelative():void {
             var p:WorldPlayer = this.client_player
+            // this.x = 0
+            // this.y = 0
             this.x = StageData.StageWidth / 2 - p.x
             this.y = StageData.StageHeight / 2 - p.y
         }
 
         private function handleChunk(pk:PublicMineAreaChunk):void {
-            var x:int = pk.ChunkX
-            var y:int = pk.ChunkY
+            var chunkX:int = pk.ChunkX
+            var chunkY:int = pk.ChunkY
             var chunk_bts:ByteArray = pk.ChunkData
-            var chk:Chunk = new Chunk(x, y, chunk_bts)
-            trace("chunk loaded at " + x + ", " + y)
-            this.addChunk(chk)
+            if (chunk_bts == null)
+                this.removeChunk(chunkX, chunkY)
+            else
+                this.addChunk(new Chunk(chunkX, chunkY, chunk_bts))
         }
 
         private function handlePlayer(pk:PublicMineareaPlayerActorData):void {
@@ -80,22 +81,28 @@ package MineArcade.arcades.public_minearea {
         }
 
         private function addChunk(chk:Chunk):void {
-            chunks.push(chk)
+            chunks[Chunk.GetMapIndexByChunkXY(chk.chunkX, chk.chunkY)] = chk
             this.addChild(chk)
         }
 
-        private function removeChunk(chk:Chunk):void {
-            chunks.removeAt(chunks.indexOf(chk))
+        private function removeChunk(chunkX:int, chunkY:int):void {
+            var index:int = Chunk.GetMapIndexByChunkXY(chunkX, chunkY)
+            var chk:Chunk = chunks[index]
+            if (chk == null) {
+                trace("Chunk x="+chunkX+" y="+chunkY+" not found, can't be removed")
+                return
+            }
             this.removeChild(chk)
+            chunks[index] = null
         }
 
-        private function chunksGC():void {
-            var i:int = 0
-            for (i = 0; i < chunks.length; i++) {
-                if (chunks[i].CanBeRemoved(this.client_player)) {
-                    this.removeChunk(chunks[i])
-                }
-            }
-        }
+        // private function chunksGC():void {
+        //     var i:int = 0
+        //     for (i = 0; i < chunks.length; i++) {
+        //         if (chunks[i].CanBeRemoved(this.client_player)) {
+        //             this.removeChunk(chunks[i])
+        //         }
+        //     }
+        // }
     }
 }

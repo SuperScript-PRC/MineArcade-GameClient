@@ -90,7 +90,6 @@
                 if (res) {
                     removePacketListener(pkID, fnc);
                     ok = true;
-                    trace("PK Handler: ok = true")
                 }
             }
             listeners.push(fnc);

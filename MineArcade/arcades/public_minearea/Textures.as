@@ -63,7 +63,7 @@ package MineArcade.arcades.public_minearea {
             if (t == null) {
                 throw new Error("Texture not found: " + texture_name);
             } else {
-                return t;
+                return new Bitmap(t.bitmapData);
             }
         }
     }

@@ -21,7 +21,13 @@ package MineArcade.protocol.packets {
             this.ChunkX = r.readInt();
             this.ChunkY = r.readInt();
             this.ChunkData = new ByteArray();
-            r.readBytes(this.ChunkData, 256);
+            var chunkLength:Number = r.readInt();
+            if (chunkLength != 256 && chunkLength != 0)
+                throw new Error("ChunkData length error: " + this.ChunkData.length);
+            if (chunkLength > 0)
+                r.readBytes(this.ChunkData, 0, chunkLength);
+            else
+                this.ChunkData = null
         }
     }
 

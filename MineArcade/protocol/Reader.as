@@ -24,7 +24,6 @@ package MineArcade.protocol {
         public function ReadPacket():ServerPacket {
             var pk:ServerPacket;
             var pkID:int = this.socket.readInt();
-            trace("Read pkt " + pkID)
             switch (pkID) {
                 case Pool.IDServerHandshake:
                     pk = new ServerHandshake();

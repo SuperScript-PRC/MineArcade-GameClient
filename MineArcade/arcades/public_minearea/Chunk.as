@@ -1,12 +1,12 @@
 package MineArcade.arcades.public_minearea {
     import flash.display.MovieClip;
     import flash.utils.ByteArray;
-    import MineArcade.define.StageData;
 
     public class Chunk extends MovieClip {
         public var chunkX:int;
         public var chunkY:int;
         public var blocks:Vector.<MineBlock> = new Vector.<MineBlock>()
+        private var inited:Boolean = false
 
         // 16x16
         public function Chunk(chunkX:int, chunkY:int, bdata:ByteArray):void {
@@ -14,14 +14,13 @@ package MineArcade.arcades.public_minearea {
             this.chunkX = chunkX
             this.chunkY = chunkY
             this.x = chunkX * 512
-            this.y = chunkY * 512
+            this.y = (32 - chunkY) * 512
             var i_x:int, i_y:int;
             for (i_x = 0; i_x < 16; i_x++) {
                 for (i_y = 0; i_y < 16; i_y++) {
                     var bt_type:int = bdata.readByte()
                     var bt:Class = Blocks.GetBlock(bt_type)
-                    var b:MineBlock = new bt(i_x * 32, i_y * 32)
-                    trace("Load block " + b + " at " + b.X + ", " + b.Y)
+                    var b:MineBlock = new bt(i_x, i_y)
                     this.addChild(b)
                     blocks.push(b)
                 }
@@ -40,9 +39,21 @@ package MineArcade.arcades.public_minearea {
             return this.y + 256
         }
 
-        public function CanBeRemoved(player:WorldPlayer):Boolean {
-            // 当区块离开舞台的时候卸载
-            return Math.abs(this.center_x - player.x) > StageData.StageWidth / 2 + 256 || Math.abs(this.center_y - player.y) > StageData.StageHeight / 2 + 256
+        // public function CanBeRemoved(player:WorldPlayer):Boolean {
+        //     // 当区块离开舞台的时候卸载
+        //     var c:Boolean = Math.abs(this.center_x - player.x) < PLAYER_SIGHT && Math.abs(this.center_y - player.y) < PLAYER_SIGHT
+        //     if (!this.inited && c)
+        //         this.inited = true;
+        //     if (this.inited)
+        //         return !c
+        //     else
+        //         return false
+        // }
+        public static function GetMapIndexByChunkXY(x: int, y: int):int{
+            return x + y * 32
         }
     }
 }
+
+const BLOCK_SIZE:int = 16
+const PLAYER_SIGHT:int = 48 * BLOCK_SIZE
