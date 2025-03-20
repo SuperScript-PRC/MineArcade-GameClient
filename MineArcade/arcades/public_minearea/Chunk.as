@@ -5,7 +5,7 @@ package MineArcade.arcades.public_minearea {
     public class Chunk extends MovieClip {
         public var chunkX:int;
         public var chunkY:int;
-        public var blocks:Vector.<MineBlock> = new Vector.<MineBlock>()
+        public var blocks:Vector.<MineBlock> = new Vector.<MineBlock>(256)
         private var inited:Boolean = false
 
         // 16x16
@@ -16,19 +16,25 @@ package MineArcade.arcades.public_minearea {
             this.x = chunkX * 512
             this.y = (32 - chunkY) * 512
             var i_x:int, i_y:int;
-            for (i_x = 0; i_x < 16; i_x++) {
-                for (i_y = 0; i_y < 16; i_y++) {
-                    var bt_type:int = bdata.readByte()
-                    var bt:Class = Blocks.GetBlock(bt_type)
-                    var b:MineBlock = new bt(i_x, i_y)
+            for (i_y = 0; i_y < 16; i_y++) {
+                for (i_x = 0; i_x < 16; i_x++) {
+                    var b:MineBlock = Blocks.NewBlock(i_x, i_y, bdata.readByte())
                     this.addChild(b)
-                    blocks.push(b)
+                    blocks[GetBlockIndexByBlockXY(i_x, i_y)] = b
                 }
             }
         }
 
         public function GetToPlayerDistance(player:WorldPlayer):Number {
             return Math.sqrt(Math.pow((this.center_x - player.x), 2) + Math.pow((this.center_y - player.y), 2))
+        }
+
+        public function ModifyBlock(blockX:int, blockY:int, newBlockID:int):void {
+            var index:int = GetBlockIndexByBlockXY(blockX, blockY)
+            this.removeChild(blocks[index])
+            var newBlock:MineBlock = Blocks.NewBlock(blockX, blockY, newBlockID)
+            blocks[index] = newBlock
+            this.addChild(newBlock)
         }
 
         public function get center_x():Number {
@@ -49,8 +55,11 @@ package MineArcade.arcades.public_minearea {
         //     else
         //         return false
         // }
-        public static function GetMapIndexByChunkXY(x: int, y: int):int{
+        public static function GetMapIndexByChunkXY(x:int, y:int):int {
             return x + y * 32
+        }
+        public static function GetBlockIndexByBlockXY(x: int, y:int):int{
+            return x + y * 16
         }
     }
 }
