@@ -23,11 +23,12 @@ package MineArcade.arcades.public_minearea {
                 RawGold: "raw_gold",
                 RedstoneDust: "redstone_dust",
                 LapisLazuli: "lapis_lazuli"}
+        public static const DestroyStage:Vector.<Bitmap> = new Vector.<Bitmap>(10);
         private static var progress:int = 0;
         private static var loaded_textures:Object = {};
 
         public static function LoadBlockTextures(ok_cb:Function):void {
-            var not_loaded_textures_num:int = getDictLen(BlockTextures);
+            var not_loaded_textures_num:int = getDictLen(BlockTextures) + 10;
             for (var k:String in BlockTextures) {
                 var image_name:* = BlockTextures[k]
                 if (image_name == undefined) {
@@ -39,6 +40,14 @@ package MineArcade.arcades.public_minearea {
                     if (not_loaded_textures_num == 0)
                         ok_cb()
                 }, image_name);
+            }
+            for(var i:int = 0; i < 10; i++){
+                LoadTexture("resources/images/blocks/destroy_stage_" + i + ".png", function(_i:int, c:Bitmap):void {
+                    DestroyStage[_i] = c;
+                    not_loaded_textures_num--;
+                    if (not_loaded_textures_num == 0)
+                        ok_cb()
+                }, i);
             }
         }
 
@@ -65,6 +74,9 @@ package MineArcade.arcades.public_minearea {
             } else {
                 return new Bitmap(t.bitmapData);
             }
+        }
+        public static function GetDestroyStage(index:int):Bitmap {
+            return new Bitmap(DestroyStage[index].bitmapData);
         }
     }
 }

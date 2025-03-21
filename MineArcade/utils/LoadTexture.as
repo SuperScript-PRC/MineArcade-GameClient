@@ -4,7 +4,7 @@ package MineArcade.utils {
     import flash.events.Event;
     import flash.events.IOErrorEvent;
 
-    public function LoadTexture(filename:String, ok:Function, as_name:String=undefined):void {
+    public function LoadTexture(filename:String, ok:Function, as_name:*=undefined):void {
         var loader:Loader = new Loader();
         loader.load(new URLRequest(filename));
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event):void {

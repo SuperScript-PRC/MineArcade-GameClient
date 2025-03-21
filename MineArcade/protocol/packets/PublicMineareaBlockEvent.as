@@ -4,13 +4,11 @@ package MineArcade.protocol.packets {
     public class PublicMineareaBlockEvent implements ClientPacket, ServerPacket {
         public var BlockX:int;
         public var BlockY:int;
-        public var Action:int;
         public var NewBlock:int;
 
-        public function PublicMineareaBlockEvent(BlockX:int = undefined, BlockY:int = undefined, Action:int = undefined, NewBlock:int = undefined):void {
+        public function PublicMineareaBlockEvent(BlockX:int = undefined, BlockY:int = undefined, NewBlock:int = undefined):void {
             this.BlockX = BlockX
             this.BlockY = BlockY
-            this.Action = Action
             this.NewBlock = NewBlock
         }
 
@@ -21,14 +19,12 @@ package MineArcade.protocol.packets {
         public function Unmarshal(r:Socket):void {
             this.BlockX = r.readInt();
             this.BlockY = r.readInt();
-            this.Action = r.readByte();
             this.NewBlock = r.readByte();
         }
 
         public function Marshal(w:Socket):void {
             w.writeInt(this.BlockX);
             w.writeInt(this.BlockY);
-            w.writeByte(this.Action);
             w.writeByte(this.NewBlock);
         }
     }

@@ -26,8 +26,9 @@ package MineArcade.gui {
             tfmt.font = "Unifont"
             tfmt.color = 0xFFFFFF
             tfmt.size = 20
-            tf.width = 400
+            tf.width = 1000
             tf.text = msg
+            tf.selectable = false
             tf.setTextFormat(tfmt)
 
             var mc_width:Number = tf.textWidth + BORDER_WIDTH * 2

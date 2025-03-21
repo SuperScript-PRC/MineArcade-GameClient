@@ -14,13 +14,15 @@ package MineArcade.arcades.public_minearea {
             this.chunkX = chunkX
             this.chunkY = chunkY
             this.x = chunkX * 512
-            this.y = (32 - chunkY) * 512
+            this.y = (31 - chunkY) * 512
             var i_x:int, i_y:int;
-            for (i_y = 0; i_y < 16; i_y++) {
-                for (i_x = 0; i_x < 16; i_x++) {
-                    var b:MineBlock = Blocks.NewBlock(i_x, i_y, bdata.readByte())
-                    this.addChild(b)
+            for (i_y = 0; i_y < define.CHUNK_SIZE; i_y++) {
+                for (i_x = 0; i_x < define.CHUNK_SIZE; i_x++) {
+                    var b:MineBlock = Blocks.NewBlock(chunkX * define.CHUNK_SIZE + i_x, chunkY * define.CHUNK_SIZE + i_y, bdata.readByte())
+                    b.x = i_x * define.CHUNK_SIZE
+                    b.y = (15 - i_y) * 32
                     blocks[GetBlockIndexByBlockXY(i_x, i_y)] = b
+                    this.addChild(b)
                 }
             }
         }
@@ -30,11 +32,17 @@ package MineArcade.arcades.public_minearea {
         }
 
         public function ModifyBlock(blockX:int, blockY:int, newBlockID:int):void {
-            var index:int = GetBlockIndexByBlockXY(blockX, blockY)
+            var index:int = GetBlockIndexByBlockXY(blockX % 16, blockY % 16)
             this.removeChild(blocks[index])
             var newBlock:MineBlock = Blocks.NewBlock(blockX, blockY, newBlockID)
+            newBlock.x = (blockX % 16) * 32
+            newBlock.y = (15 - blockY % 16) * 32
             blocks[index] = newBlock
             this.addChild(newBlock)
+        }
+
+        public function GetBlock(blockX:int, blockY:int):MineBlock {
+            return blocks[GetBlockIndexByBlockXY(blockX, blockY)]
         }
 
         public function get center_x():Number {
@@ -58,7 +66,8 @@ package MineArcade.arcades.public_minearea {
         public static function GetMapIndexByChunkXY(x:int, y:int):int {
             return x + y * 32
         }
-        public static function GetBlockIndexByBlockXY(x: int, y:int):int{
+
+        public static function GetBlockIndexByBlockXY(x:int, y:int):int {
             return x + y * 16
         }
     }

@@ -10,6 +10,8 @@ package MineArcade.protocol {
         }
 
         public function WritePacket(pk:ClientPacket):void {
+            if (!this.socket.connected)
+                return;
             this.write_packet_header(pk.ID());
             pk.Marshal(this.socket);
             this.socket.flush()

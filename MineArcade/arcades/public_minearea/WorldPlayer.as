@@ -17,6 +17,7 @@ package MineArcade.arcades.public_minearea {
         public var x_speed:Number = 0;
         public var y_speed:Number = 0;
         public var is_cli_player:Boolean;
+        public var dig_speed: Number = 1;
         private var walk_a:Number = 0;
         private var is_jump:Boolean = false;
 
@@ -31,9 +32,9 @@ package MineArcade.arcades.public_minearea {
             if (this.is_cli_player) {
                 // 其他玩家的移动只依赖服务器传输来的 Actor
                 EventContext.Create(this, StageMC.stage, KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent):void {
-                    if (e.keyCode == Keyboard.LEFT)
+                    if (e.keyCode == Keyboard.A)
                         walk_a = -0.4
-                    else if (e.keyCode == Keyboard.RIGHT)
+                    else if (e.keyCode == Keyboard.D)
                         walk_a = 0.4
                     else if (e.keyCode == Keyboard.SPACE) {
                         if (!is_jump)
@@ -42,9 +43,9 @@ package MineArcade.arcades.public_minearea {
                     }
                 })
                 EventContext.Create(this, StageMC.stage, KeyboardEvent.KEY_UP, function(e:KeyboardEvent):void {
-                    if (e.keyCode == Keyboard.LEFT)
+                    if (e.keyCode == Keyboard.A)
                         walk_a = 0
-                    else if (e.keyCode == Keyboard.RIGHT)
+                    else if (e.keyCode == Keyboard.D)
                         walk_a = 0
                     else if (e.keyCode == Keyboard.SPACE)
                         is_jump = false
@@ -69,7 +70,7 @@ package MineArcade.arcades.public_minearea {
 
         private function _TempDraw():void {
             this.graphics.beginFill(0x00FF00)
-            this.graphics.drawRect(0, 0, 25, 64)
+            this.graphics.drawRect(0, 0, 25, 60)
             this.graphics.endFill()
         }
 
@@ -115,15 +116,24 @@ package MineArcade.arcades.public_minearea {
                         var block_upper_y:Number = chunk_y + block.y
                         var block_right_x:Number = block_left_x + BLOCK_SIZE
                         var block_lower_y:Number = block_upper_y + BLOCK_SIZE
-                        if ((block_upper_y > upper_y && block_upper_y < lower_y) || (block_lower_y > upper_y && block_lower_y < lower_y) || (block_upper_y < lower_y && block_lower_y > upper_y))
-                            if (right_x >= block_left_x && right_x <= block_right_x)
+                        if ( //
+                            (block_upper_y > upper_y && block_upper_y < lower_y) || //
+                            (block_lower_y > upper_y && block_lower_y < lower_y) || //
+                            (block_upper_y < lower_y && block_lower_y > upper_y) //
+                            )
+                            if (right_x + 1 > block_left_x && right_x - 1 < block_right_x)
+
                                 right = true;
-                            else if (left_x <= block_right_x && left_x >= block_left_x)
+                            else if (left_x - 1 < block_right_x && left_x + 1 > block_left_x)
                                 left = true;
-                        if ((block_left_x > left_x && block_left_x < right_x) || (block_right_x > left_x && block_right_x < right_x) || (block_left_x < right_x && block_right_x > left_x))
-                            if (lower_y >= block_upper_y && lower_y <= block_lower_y) {
+                        if ( //
+                            (block_left_x > left_x && block_left_x < right_x) || //
+                            (block_right_x > left_x && block_right_x < right_x) || //
+                            (block_left_x < right_x && block_right_x > left_x) //
+                            )
+                            if (lower_y + 1 > block_upper_y && lower_y - 1 < block_lower_y) {
                                 down = true;
-                            } else if (upper_y <= block_lower_y && upper_y >= block_upper_y)
+                            } else if (upper_y - 1 < block_lower_y && upper_y + 1 > block_upper_y)
                                 up = true;
                     }
                 }

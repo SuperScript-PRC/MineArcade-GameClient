@@ -14,8 +14,6 @@ package MineArcade.arcades.public_minearea {
         public function MineBlock(X:int, Y:int, id:int = undefined, hard:int = undefined, _texture_name:String = null, is_hidden:Boolean = false) {
             this.X = X
             this.Y = Y
-            this.x = X * 32
-            this.y = Y * 32
             this.id = id
             this.hard = hard
             this.texture_name = _texture_name
