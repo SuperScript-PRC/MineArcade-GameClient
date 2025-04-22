@@ -12,7 +12,7 @@ package MineArcade.protocol {
             socket = sock;
         }
 
-        public static function readArray(reader:Socket, unmarshaler:Function):Array {
+        public static function readArray(reader:ByteArray, unmarshaler:Function):Array {
             var arr:Array = [];
             var arr_length:int = reader.readInt();
             for (var i:Number = 0; i < arr_length; i++) {
@@ -23,7 +23,10 @@ package MineArcade.protocol {
 
         public function ReadPacket():ServerPacket {
             var pk:ServerPacket;
-            var pkID:int = this.socket.readInt();
+            var pk_size: int = this.socket.readInt();
+            var buf: ByteArray = new ByteArray();
+            this.socket.readBytes(buf, pk_size)
+            var pkID:int = buf.readInt();
             switch (pkID) {
                 case Pool.IDServerHandshake:
                     pk = new ServerHandshake();
@@ -62,7 +65,7 @@ package MineArcade.protocol {
                     trace("[PacketHandler] Unknown packet ID: " + pkID);
                     return null;
             }
-            pk.Unmarshal(this.socket);
+            pk.Unmarshal(buf);
             return pk
         }
     }

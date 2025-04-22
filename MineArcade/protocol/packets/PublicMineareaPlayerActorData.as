@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class PublicMineareaPlayerActorData implements ClientPacket, ServerPacket {
         public var Nickname:String;
@@ -20,7 +20,7 @@ package MineArcade.protocol.packets {
             return Pool.IDPublicMineareaPlayerActorData
         }
 
-        public function Unmarshal(r:Socket):void {
+        public function Unmarshal(r:ByteArray):void {
             this.Nickname = r.readUTF();
             this.UUIDStr = r.readUTF();
             this.X = r.readDouble();
@@ -28,7 +28,7 @@ package MineArcade.protocol.packets {
             this.Action = r.readByte();
         }
 
-        public function Marshal(w:Socket):void {
+        public function Marshal(w:ByteArray):void {
             w.writeUTF(this.Nickname)
             w.writeUTF(this.UUIDStr);
             w.writeDouble(this.X);

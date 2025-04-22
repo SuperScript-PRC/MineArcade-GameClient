@@ -1,6 +1,7 @@
 package MineArcade.protocol {
     import flash.net.Socket;
     import MineArcade.protocol.packets.ClientPacket;
+    import flash.utils.ByteArray;
 
     public class Writer {
         private var socket:Socket;
@@ -12,13 +13,12 @@ package MineArcade.protocol {
         public function WritePacket(pk:ClientPacket):void {
             if (!this.socket.connected)
                 return;
-            this.write_packet_header(pk.ID());
-            pk.Marshal(this.socket);
+            var buf:ByteArray = new ByteArray();
+            buf.writeInt(pk.ID())
+            pk.Marshal(buf);
+            this.socket.writeInt(buf.length)
+            this.socket.writeBytes(buf)
             this.socket.flush()
-        }
-
-        private function write_packet_header(pkID:Number):void {
-            this.socket.writeInt(pkID);
         }
     }
 }

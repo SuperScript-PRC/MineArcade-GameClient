@@ -2,6 +2,7 @@ package MineArcade.arcades.public_minearea {
 
     import flash.display.MovieClip;
     import flash.display.Bitmap;
+    import flash.geom.ColorTransform;
 
     public class MineBlock extends MovieClip {
         public var id:int = undefined;
@@ -26,15 +27,53 @@ package MineArcade.arcades.public_minearea {
                 bmp.width = 32
                 this.addChild(bmp)
             }
-            else {
-                // this.graphics.beginFill(randColor())
-                // this.graphics.drawRect(0, 0, 32, 32)
-                // this.graphics.endFill()
-            }
         }
 
         public function Digged():void {
             throw new Error("Not implemented")
+        }
+
+        public function ActivateAndUpdate(map:MineAreaMap):void{
+            this.Update(map)
+            for each (var xy:Array in [[1, 0], [-1, 0], [0, 1], [0, -1]]){
+                var b:MineBlock = map.GetBlock(this.X + xy[0], this.Y + xy[1], true)
+                if (b != null)
+                    b.Update(map)
+            }
+        }
+
+        public function Update(map:MineAreaMap):void{
+            this.updateDark(map)
+        }
+
+        public function AirNearby(map:MineAreaMap):int{
+            var air_num: int = 0
+            for each (var xy:Array in [[1, 0], [-1, 0], [0, 1], [0, -1]]){
+                var b:MineBlock = map.GetBlock(this.X + xy[0], this.Y + xy[1], true)
+                if (b != null)
+                    if (b.id == 0) air_num++
+            }
+            return air_num
+        }
+
+        private function updateDark(map:MineAreaMap):void{
+            var solid_blocks_num: int = 0
+            for each (var xy:Array in [[1, 0], [-1, 0], [0, 1], [0, -1]]){
+                var b:MineBlock = map.GetBlock(this.X + xy[0], this.Y + xy[1], true)
+                if (b != null)
+                    if (!b.is_hidden) solid_blocks_num++
+            }
+            var color:ColorTransform = new ColorTransform()
+            if (solid_blocks_num == 4) {
+                color.redOffset = -255
+                color.greenOffset = -255
+                color.blueOffset = -255
+            } else {
+                color.redOffset = 0
+                color.greenOffset = 0
+                color.blueOffset = 0
+            }
+            this.transform.colorTransform = color
         }
     }
 }

@@ -17,7 +17,7 @@ package MineArcade.protocol.packets {
             return Pool.IDPublicMineAreaChunk
         }
 
-        public function Unmarshal(r:Socket):void {
+        public function Unmarshal(r:ByteArray):void {
             this.ChunkX = r.readInt();
             this.ChunkY = r.readInt();
             this.ChunkData = new ByteArray();

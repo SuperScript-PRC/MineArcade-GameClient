@@ -1,8 +1,9 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+
+    import flash.utils.ByteArray;
 
     public interface ClientPacket {
         function ID():int;
-        function Marshal(w:Socket):void;
+        function Marshal(w:ByteArray):void;
     }
 }

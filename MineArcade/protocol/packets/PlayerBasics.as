@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class PlayerBasics implements ServerPacket {
         public var Nickname:String;
@@ -23,7 +23,7 @@ package MineArcade.protocol.packets {
             return Pool.IDPlayerBasics
         }
 
-        public function Unmarshal(r:Socket):void {
+        public function Unmarshal(r:ByteArray):void {
             this.Nickname = r.readUTF();
             this.UUID = r.readUTF();
             this.Money = r.readDouble();

@@ -13,17 +13,32 @@ package MineArcade.arcades.public_minearea {
             super()
             this.chunkX = chunkX
             this.chunkY = chunkY
-            this.x = chunkX * 512
-            this.y = (31 - chunkY) * 512
+            this.x = chunkX * define.CHUNK_BORDER_SIZE
+            this.y = (31 - chunkY) * define.CHUNK_BORDER_SIZE
             var i_x:int, i_y:int;
             for (i_y = 0; i_y < define.CHUNK_SIZE; i_y++) {
                 for (i_x = 0; i_x < define.CHUNK_SIZE; i_x++) {
-                    var b:MineBlock = Blocks.NewBlock(chunkX * define.CHUNK_SIZE + i_x, chunkY * define.CHUNK_SIZE + i_y, bdata.readByte())
-                    b.x = i_x * define.CHUNK_SIZE
-                    b.y = (15 - i_y) * 32
+                    var b:MineBlock = MineBlocks.NewBlock(chunkX * define.CHUNK_SIZE + i_x, chunkY * define.CHUNK_SIZE + i_y, bdata.readByte())
+                    b.x = i_x * define.BLOCK_SIZE
+                    b.y = (define.CHUNK_SIZE - 1 - i_y) * define.BLOCK_SIZE
                     blocks[GetBlockIndexByBlockXY(i_x, i_y)] = b
                     this.addChild(b)
                 }
+            }
+        }
+
+        public function ActivateAndUpdate(map:MineAreaMap):void{
+            this.Update(map)
+            for each (var xy:Array in [[1, 0], [-1, 0], [0, 1], [0, -1]]){
+                var c:Chunk = map.GetChunk(this.chunkX + xy[0], this.chunkY + xy[1], true)
+                if (c != null)
+                    c.Update(map)
+            }
+        }
+
+        public function Update(map:MineAreaMap):void{
+            for each (var b:MineBlock in blocks) {
+                b.Update(map)
             }
         }
 
@@ -31,14 +46,15 @@ package MineArcade.arcades.public_minearea {
             return Math.sqrt(Math.pow((this.center_x - player.x), 2) + Math.pow((this.center_y - player.y), 2))
         }
 
-        public function ModifyBlock(blockX:int, blockY:int, newBlockID:int):void {
-            var index:int = GetBlockIndexByBlockXY(blockX % 16, blockY % 16)
+        public function ModifyBlock(map: MineAreaMap, blockX:int, blockY:int, newBlockID:int):void {
+            var index:int = GetBlockIndexByBlockXY(blockX % define.CHUNK_SIZE, blockY % define.CHUNK_SIZE)
             this.removeChild(blocks[index])
-            var newBlock:MineBlock = Blocks.NewBlock(blockX, blockY, newBlockID)
-            newBlock.x = (blockX % 16) * 32
-            newBlock.y = (15 - blockY % 16) * 32
+            var newBlock:MineBlock = MineBlocks.NewBlock(blockX, blockY, newBlockID)
+            newBlock.x = (blockX % define.CHUNK_SIZE) * define.BLOCK_SIZE
+            newBlock.y = (define.CHUNK_SIZE - 1 - blockY % define.CHUNK_SIZE) * define.BLOCK_SIZE
             blocks[index] = newBlock
             this.addChild(newBlock)
+            newBlock.ActivateAndUpdate(map)
         }
 
         public function GetBlock(blockX:int, blockY:int):MineBlock {
@@ -46,11 +62,11 @@ package MineArcade.arcades.public_minearea {
         }
 
         public function get center_x():Number {
-            return this.x + 256
+            return this.x + define.CHUNK_BORDER_SIZE / 2
         }
 
         public function get center_y():Number {
-            return this.y + 256
+            return this.y + define.CHUNK_BORDER_SIZE / 2
         }
 
         // public function CanBeRemoved(player:WorldPlayer):Boolean {
@@ -64,14 +80,12 @@ package MineArcade.arcades.public_minearea {
         //         return false
         // }
         public static function GetMapIndexByChunkXY(x:int, y:int):int {
-            return x + y * 32
+            return x + y * define.MAP_BORDER_CHUNK_X
         }
 
         public static function GetBlockIndexByBlockXY(x:int, y:int):int {
-            return x + y * 16
+            return x + y * define.CHUNK_SIZE
         }
     }
 }
 
-const BLOCK_SIZE:int = 16
-const PLAYER_SIGHT:int = 48 * BLOCK_SIZE

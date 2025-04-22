@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class ServerHandshake implements ServerPacket {
         public var Success:Boolean;
@@ -16,7 +16,7 @@ package MineArcade.protocol.packets {
             return Pool.IDServerHandshake
         }
 
-        public function Unmarshal(r:Socket):void {
+        public function Unmarshal(r:ByteArray):void {
             this.Success = r.readBoolean();
             this.ServerVersion = r.readInt();
             this.ServerMessage = r.readUTF();

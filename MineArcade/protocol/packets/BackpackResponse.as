@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
     import MineArcade.protocol.Reader;
 
     public class BackpackResponse implements ServerPacket{
@@ -13,8 +13,8 @@ package MineArcade.protocol.packets {
             return Pool.IDBackpackResponse
         }
 
-        public function Unmarshal(r:Socket):void {
-            this.Items = Reader.readArray(r, function(r:Socket):Item {
+        public function Unmarshal(r:ByteArray):void {
+            this.Items = Reader.readArray(r, function(r:ByteArray):Item {
                 var it:Item = new Item()
                 it.Unmarshal(r)
                 return it
@@ -23,13 +23,13 @@ package MineArcade.protocol.packets {
     }
 }
 
-import flash.net.Socket;
+import flash.utils.ByteArray;
 
 class Item {
     public var ID:int;
     public var Amount:int;
 
-    public function Unmarshal(r:Socket):void {
+    public function Unmarshal(r:ByteArray):void {
         this.ID = r.readInt();
         this.Amount = r.readInt();
     }

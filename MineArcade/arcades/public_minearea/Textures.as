@@ -14,7 +14,8 @@ package MineArcade.arcades.public_minearea {
                 DiamondOre: "diamond_ore",
                 EmeraldOre: "emerald_ore",
                 RedstoneOre: "redstone_ore",
-                LapisOre: "lapis_ore"}
+                LapisOre: "lapis_ore",
+                Cobblestone: "cobblestone"}
         public static const ItemTextures:Object = { //
                 Coal: "coal",
                 Diamond: "diamond",
@@ -22,7 +23,8 @@ package MineArcade.arcades.public_minearea {
                 RawIron: "raw_iron",
                 RawGold: "raw_gold",
                 RedstoneDust: "redstone_dust",
-                LapisLazuli: "lapis_lazuli"}
+                LapisLazuli: "lapis_lazuli",
+                Cobblestone: "cobblestone"}
         public static const DestroyStage:Vector.<Bitmap> = new Vector.<Bitmap>(10);
         private static var progress:int = 0;
         private static var loaded_textures:Object = {};
@@ -52,11 +54,11 @@ package MineArcade.arcades.public_minearea {
         }
 
         public static function LoadItemTextures(ok_cb:Function):void {
-            var not_loaded_textures_num:int = getDictLen(BlockTextures);
-            for (var k:String in BlockTextures) {
-                var image_name:* = BlockTextures[k]
+            var not_loaded_textures_num:int = getDictLen(ItemTextures);
+            for (var k:String in ItemTextures) {
+                var image_name:* = ItemTextures[k]
                 if (image_name == undefined) {
-                    throw new Error("Block texture name not found: " + k);
+                    throw new Error("Item texture name not found: " + k);
                 }
                 LoadTexture("resources/images/pixel_items/" + image_name + ".png", function(name:String, c:Bitmap):void {
                     loaded_textures[name] = c;
