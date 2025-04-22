@@ -1,6 +1,6 @@
 package MineArcade.protocol.packets {
 
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class StartGame implements ClientPacket {
         public var ArcadeGameType: int
@@ -15,7 +15,7 @@ package MineArcade.protocol.packets {
             return Pool.IDStartGame
         }
 
-        public function Marshal(w: Socket): void {
+        public function Marshal(w: ByteArray): void {
             w.writeByte(this.ArcadeGameType)
             w.writeUTF(this.EntryID)
         }
