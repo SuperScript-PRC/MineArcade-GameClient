@@ -1,6 +1,6 @@
 package MineArcade.protocol.packets
 {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class ClientHandshake implements ClientPacket {
         public var ClientVersion: int;
@@ -13,8 +13,8 @@ package MineArcade.protocol.packets
             return Pool.IDClientHandshake
         }
 
-        public function Marshal(r:Socket):void{
-            r.writeInt(this.ClientVersion)
+        public function Marshal(w:ByteArray):void{
+            w.writeInt(this.ClientVersion)
         }
     }
 }

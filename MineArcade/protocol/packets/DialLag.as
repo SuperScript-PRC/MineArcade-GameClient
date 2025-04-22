@@ -1,5 +1,5 @@
 package MineArcade.protocol.packets {
-    import flash.net.Socket;
+    import flash.utils.ByteArray;
 
     public class DialLag implements ClientPacket {
         public var dialUUID:String;
@@ -12,7 +12,7 @@ package MineArcade.protocol.packets {
             return Pool.IDDialLag
         }
 
-        public function Marshal(w:Socket):void {
+        public function Marshal(w:ByteArray):void {
             w.writeUTF(this.dialUUID)
         }
     }
