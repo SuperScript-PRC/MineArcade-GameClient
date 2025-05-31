@@ -1,5 +1,7 @@
-package MineArcade.protocol.packets {
+package MineArcade.protocol.packets.general {
     import flash.utils.ByteArray;
+    import MineArcade.protocol.packets.ClientPacket;
+    import MineArcade.protocol.packets.Pool;
 
     public class DialLag implements ClientPacket {
         public var dialUUID:String;

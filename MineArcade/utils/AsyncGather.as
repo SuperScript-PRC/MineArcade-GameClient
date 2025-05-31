@@ -1,13 +1,15 @@
 package MineArcade.utils {
-    public function AsyncGather(ok_cb:Function, ... funcs:Array):void {
-        const all_ok_num:int = funcs.length
-        var ok_num:int = 0
-        for each (var func:Function in funcs) {
-            func(function():void {
-                ok_num++
-                if (ok_num == all_ok_num)
-                    ok_cb()
-            })
-        }
+    public function AsyncGather(promises:Array):LPromise {
+        return new LPromise(function(ok:Function):void {
+            var ok_num:int = 0
+            var total_num:int = promises.length
+            for each (var promise:LPromise in promises) {
+                promise.last(function(... _):void {
+                    ok_num++
+                    if (ok_num == total_num)
+                        ok()
+                })
+            }
+        })
     }
 }

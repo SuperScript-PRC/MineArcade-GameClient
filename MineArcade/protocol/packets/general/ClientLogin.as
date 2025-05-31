@@ -1,5 +1,8 @@
-package MineArcade.protocol.packets {
+package MineArcade.protocol.packets.general {
     import flash.utils.ByteArray;
+    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.ClientPacket;
+    import MineArcade.protocol.packets.PacketNetType;
 
     public class ClientLogin implements ClientPacket {
         public var Username: String;
@@ -12,6 +15,10 @@ package MineArcade.protocol.packets {
 
         public function ID():int{
             return Pool.IDClientLogin
+        }
+
+        public function NetType(): int{
+            return PacketNetType.TCP
         }
 
         public function Marshal(w:ByteArray):void{

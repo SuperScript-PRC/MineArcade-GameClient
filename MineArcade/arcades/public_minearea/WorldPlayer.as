@@ -5,10 +5,10 @@ package MineArcade.arcades.public_minearea {
     import MineArcade.mcs_getter.StageMC;
     import flash.events.Event;
     import flash.events.KeyboardEvent;
-    import MineArcade.protocol.packets.PublicMineareaPlayerActorData;
-    import MineArcade.protocol.Writer;
+    import MineArcade.protocol.PacketWriter;
     import MineArcade.core.Main;
     import MineArcade.fixer.IntervalContext;
+    import MineArcade.protocol.packets.arcade.public_minearea.PublicMineareaPlayerActorData;
 
     public class WorldPlayer extends MovieClip {
         private var map:MineAreaMap;
@@ -27,7 +27,7 @@ package MineArcade.arcades.public_minearea {
             this.uuid = uuid
             this.is_cli_player = is_cli_player
             this.map = map
-            var pk_sender:Writer = Main.GCore.getPacketWriter()
+            var pk_sender:PacketWriter = Main.GCore.getPacketWriter()
             this._TempDraw()
             if (this.is_cli_player) {
                 // 其他玩家的移动只依赖服务器传输来的 Actor

@@ -1,5 +1,8 @@
-package MineArcade.protocol.packets {
+package MineArcade.protocol.packets.lobby {
     import flash.utils.ByteArray;
+    import MineArcade.protocol.packets.ServerPacket;
+    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketNetType;
 
     public class PlayerBasics implements ServerPacket {
         public var Nickname:String;
@@ -21,6 +24,10 @@ package MineArcade.protocol.packets {
 
         public function ID():int {
             return Pool.IDPlayerBasics
+        }
+
+        public function NetType(): int{
+            return PacketNetType.TCP
         }
 
         public function Unmarshal(r:ByteArray):void {

@@ -1,4 +1,7 @@
-﻿package MineArcade.gui {
+﻿/**
+ * TipWindow
+*/
+package MineArcade.gui {
     import flash.display.MovieClip;
     import MineArcade.mcs_getter.WindowMC
     import MineArcade.mcs_getter.StageMC

@@ -30,7 +30,7 @@ package MineArcade.stage.animations {
             })
             var urlreq:URLRequest = new URLRequest(img_path)
             ld.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent):void {
-                trace("加载方块贴图遇到问题: " + e.text)
+                trace("[PublicMineArea] 加载方块贴图遇到问题: " + e.text)
             })
             ld.load(urlreq)
         }

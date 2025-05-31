@@ -6,6 +6,9 @@ package MineArcade.core {
     import flash.utils.clearInterval;
     import MineArcade.utils.FlashPlayerProtecter;
 
+    /**
+     * Static class.
+     */
     public class Main {
         public static var GCore:CorArcade;
         public static var intervalIDs:Vector.<uint> = new Vector.<uint>()

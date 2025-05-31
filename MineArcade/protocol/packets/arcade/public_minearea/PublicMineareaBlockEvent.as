@@ -1,5 +1,9 @@
-package MineArcade.protocol.packets {
+package MineArcade.protocol.packets.arcade.public_minearea {
     import flash.utils.ByteArray;
+    import MineArcade.protocol.packets.ClientPacket;
+    import MineArcade.protocol.packets.ServerPacket;
+    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketNetType;
 
     public class PublicMineareaBlockEvent implements ClientPacket, ServerPacket {
         public var BlockX:int;
@@ -14,6 +18,10 @@ package MineArcade.protocol.packets {
 
         public function ID():int {
             return Pool.IDPublicMineareaBlockEvent
+        }
+
+        public function NetType(): int{
+            return PacketNetType.UDP
         }
 
         public function Unmarshal(r:ByteArray):void {

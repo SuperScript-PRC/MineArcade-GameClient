@@ -3,6 +3,8 @@ package MineArcade.arcades.public_minearea {
     import MineArcade.utils.LoadTexture;
     import flash.display.Bitmap;
     import MineArcade.utils.getDictLen;
+    import MineArcade.utils.LPromise;
+    import MineArcade.utils.AsyncGather;
 
     public class Textures {
         public static const BlockTextures:Object = { //
@@ -14,8 +16,8 @@ package MineArcade.arcades.public_minearea {
                 DiamondOre: "diamond_ore",
                 EmeraldOre: "emerald_ore",
                 RedstoneOre: "redstone_ore",
-                LapisOre: "lapis_ore",
-                Cobblestone: "cobblestone"}
+                LapisOre: "lapis_ore" //
+        }
         public static const ItemTextures:Object = { //
                 Coal: "coal",
                 Diamond: "diamond",
@@ -24,49 +26,47 @@ package MineArcade.arcades.public_minearea {
                 RawGold: "raw_gold",
                 RedstoneDust: "redstone_dust",
                 LapisLazuli: "lapis_lazuli",
-                Cobblestone: "cobblestone"}
+                Cobblestone: "cobblestone" //
+        }
         public static const DestroyStage:Vector.<Bitmap> = new Vector.<Bitmap>(10);
         private static var progress:int = 0;
         private static var loaded_textures:Object = {};
 
-        public static function LoadBlockTextures(ok_cb:Function):void {
-            var not_loaded_textures_num:int = getDictLen(BlockTextures) + 10;
+        public static function LoadBlockTextures():LPromise {
+            var tasks:Array = [];
             for (var k:String in BlockTextures) {
                 var image_name:* = BlockTextures[k]
                 if (image_name == undefined) {
                     throw new Error("Block texture name not found: " + k);
                 }
-                LoadTexture("resources/images/blocks/" + image_name + ".png", function(name:String, c:Bitmap):void {
+                tasks.push(LoadTexture("resources/images/blocks/" + image_name + ".png", image_name).then(function(ok:Function, name:String, c:Bitmap):void {
                     loaded_textures[name] = c;
-                    not_loaded_textures_num--;
-                    if (not_loaded_textures_num == 0)
-                        ok_cb()
-                }, image_name);
+                    ok()
+                }))
             }
-            for(var i:int = 0; i < 10; i++){
-                LoadTexture("resources/images/blocks/destroy_stage_" + i + ".png", function(_i:int, c:Bitmap):void {
+            for (var i:int = 0; i < 10; i++) {
+                tasks.push(LoadTexture("resources/images/blocks/destroy_stage_" + i + ".png", i).then(function(ok:Function, _i:int, c:Bitmap):void {
                     DestroyStage[_i] = c;
-                    not_loaded_textures_num--;
-                    if (not_loaded_textures_num == 0)
-                        ok_cb()
-                }, i);
+                    ok()
+                }));
             }
+            return AsyncGather(tasks)
         }
 
-        public static function LoadItemTextures(ok_cb:Function):void {
+        public static function LoadItemTextures():LPromise {
+            var tasks:Array = [];
             var not_loaded_textures_num:int = getDictLen(ItemTextures);
             for (var k:String in ItemTextures) {
                 var image_name:* = ItemTextures[k]
                 if (image_name == undefined) {
                     throw new Error("Item texture name not found: " + k);
                 }
-                LoadTexture("resources/images/pixel_items/" + image_name + ".png", function(name:String, c:Bitmap):void {
-                    loaded_textures[name] = c;
-                    not_loaded_textures_num--;
-                    if (not_loaded_textures_num == 0)
-                        ok_cb()
-                }, image_name);
+                tasks.push(LoadTexture("resources/images/pixel_items/" + image_name + ".png", image_name).then(function(ok:Function, as_name:String, res:Bitmap):void {
+                    loaded_textures[as_name] = res
+                    ok()
+                }))
             }
+            return AsyncGather(tasks)
         }
 
         public static function GetTexture(texture_name:String):Bitmap {
@@ -77,6 +77,7 @@ package MineArcade.arcades.public_minearea {
                 return new Bitmap(t.bitmapData);
             }
         }
+
         public static function GetDestroyStage(index:int):Bitmap {
             return new Bitmap(DestroyStage[index].bitmapData);
         }

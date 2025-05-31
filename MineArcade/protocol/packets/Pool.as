@@ -1,23 +1,37 @@
+
+
 package MineArcade.protocol.packets {
 
+    import MineArcade.utils.Iota;
+
     public class Pool {
-        public static const IDClientHandshake:int = 1
-        public static const IDServerHandshake:int = 2
-        public static const IDClientLogin:int = 3
-        public static const IDClientLoginResp:int = 4
-        public static const IDKickClient:int = 5
-        public static const IDDialLag:int = 6
-        public static const IDDialLagResp:int = 7
-        public static const IDPlayerBasics:int = 8
-        public static const IDBackpackResponse:int = 9
-        public static const IDSimpleEvent:int = 10
-        public static const IDPublicMineAreaChunk:int = 11
-        public static const IDPublicMineareaBlockEvent:int = 12
-        public static const IDPublicMineareaPlayerActorData:int = 13
-        public static const IDArcadeEntryRequest:int = 14
-        public static const IDArcadeEntryResponse:int = 15
-        public static const IDStartGame:int = 16
+        // General
+        private static const iota0:Iota = new Iota();
+        private static const iota:Function = iota0.iota;
+        public static const IDClientHandshake:int = iota(1);
+        public static const IDServerHandshake:int = iota();
+        public static const IDUDPConnection:int = iota();
+        public static const IDClientLogin:int = iota();
+        public static const IDClientLoginResp:int = iota();
+        public static const IDKickClient:int = iota();
+        public static const IDDialLag:int = iota();
+        public static const IDDialLagResp:int = iota();
+        public static const IDSimpleEvent:int = iota()
+        public static const IDSimpleClientRequest:int = iota();
+        // Lobby
+        public static const IDPlayerBasics:int = iota();
+        public static const IDBackpackResponse:int = iota();
+        public static const IDRankRequest:int = iota();
+        public static const IDRankResponse:int = iota();
+        public static const IDWorldChat:int = iota();
+        public static const IDArcadeEntryRequest:int = iota();
+        public static const IDArcadeEntryResponse:int = iota();
+        public static const IDStartGame:int = iota();
+        // Arcade:PublicMineArea
+        public static const IDPublicMineAreaChunk:int = iota();
+        public static const IDPublicMineareaBlockEvent:int = iota();
+        public static const IDPublicMineareaPlayerActorData:int = iota();
+        // Max
+        public static const MaxPacketID:int = iota();
     }
 }
-
-

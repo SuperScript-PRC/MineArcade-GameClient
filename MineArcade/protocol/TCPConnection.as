@@ -6,8 +6,9 @@ package MineArcade.protocol {
     import flash.net.Socket;
     import MineArcade.protocol.packets.ServerPacket;
 
-    public class Connection {
+    public class TCPConnection {
         public var socket:Socket;
+        public var connected:Boolean = false;
         private var pk_handler:PacketHandler;
         private var ip:String;
         private var port:Number;
@@ -22,7 +23,7 @@ package MineArcade.protocol {
             trace("No error listener, error=" + e)
         };
 
-        public function Connection(ip:String, port:Number) {
+        function TCPConnection(ip:String, port:Number) {
             this.socket = new Socket();
             this.ip = ip;
             this.port = port;
@@ -32,7 +33,7 @@ package MineArcade.protocol {
             this.socket.connect(ip, port);
         }
 
-        public function hookHandler(hdl:PacketHandler):void {
+        public function HookHandler(hdl:PacketHandler):void {
             this.pk_handler = hdl;
         }
 
@@ -49,30 +50,40 @@ package MineArcade.protocol {
         }
 
         private function onConnect(event:Event):void {
+            this.connected = true;
             this.conn_listener()
         }
 
 
         private function onClose(event:Event):void {
+            this.connected = false;
             this.disconn_listener()
         }
 
 
         private function onData(event:ProgressEvent):void {
-            while (socket.bytesAvailable > 0) {
-                var pk:ServerPacket = this.pk_handler.ReadPacket();
+            while (this.connected && this.socket.bytesAvailable > 0) {
+                var pk:ServerPacket = this.pk_handler.ReadTCPPacket();
+                if (pk == null) {
+                    continue;
+                }
                 this.pk_handler.handlePacket(pk);
             }
         }
 
         private function onError(event:IOErrorEvent):void {
+            this.connected = false;
             this.error_listener(event.text);
         }
 
         private function onSecurityError(event:SecurityErrorEvent):void {
+            this.connected = false;
             this.error_listener(event.text);
         }
 
+        /**
+         * 激活所有已设置的监听器。
+         */
         public function setListeners():void {
             this.socket.addEventListener(Event.CONNECT, onConnect);
             this.socket.addEventListener(Event.CLOSE, onClose);
@@ -81,6 +92,9 @@ package MineArcade.protocol {
             this.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
         }
 
+        /**
+         * 移除所有已设置的监听器。
+         */
         public function removeListeners():void {
             this.socket.removeEventListener(Event.CONNECT, onConnect);
             this.socket.removeEventListener(Event.CLOSE, onClose);
@@ -90,6 +104,7 @@ package MineArcade.protocol {
         }
 
         public function close():void {
+             this.connected = false;
             this.removeListeners()
             this.socket.close()
         }

@@ -3,18 +3,16 @@ package MineArcade.arcades.public_minearea {
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.Pool;
     import MineArcade.core.CorArcade;
-    import MineArcade.protocol.packets.PublicMineAreaChunk;
-    import MineArcade.protocol.packets.PublicMineareaPlayerActorData;
     import MineArcade.define.StageData;
     import flash.events.MouseEvent;
     import MineArcade.fixer.EventContext;
     import flash.events.Event;
     import flash.utils.getTimer;
     import MineArcade.mcs_getter.StageMC;
-    import MineArcade.protocol.packets.PublicMineareaBlockEvent;
     import MineArcade.gui.TopMessage;
     import flash.events.KeyboardEvent;
     import flash.ui.Keyboard;
+    import MineArcade.protocol.packets.arcade.public_minearea.*;
 
     public class MineAreaMap extends MovieClip {
         private var core:CorArcade
@@ -243,7 +241,7 @@ package MineArcade.arcades.public_minearea {
             var index:int = Chunk.GetMapIndexByChunkXY(chunkX, chunkY)
             var chk:Chunk = chunks[index]
             if (chk == null) {
-                trace("[Warning] Chunk x=" + chunkX + " y=" + chunkY + " not found, can't be removed")
+                trace("[PublicMineArea] Warning: Chunk x=" + chunkX + " y=" + chunkY + " not found, can't be removed")
                 return
             }
             this.removeChild(chk)

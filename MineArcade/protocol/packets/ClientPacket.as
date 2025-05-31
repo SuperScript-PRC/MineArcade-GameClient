@@ -4,6 +4,7 @@ package MineArcade.protocol.packets {
 
     public interface ClientPacket {
         function ID():int;
+        function NetType():int;
         function Marshal(w:ByteArray):void;
     }
 }

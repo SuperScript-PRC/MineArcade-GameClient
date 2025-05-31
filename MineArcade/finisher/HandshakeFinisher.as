@@ -5,45 +5,66 @@ package MineArcade.finisher {
     import MineArcade.gui.TopMessage
     import MineArcade.core.CorArcade;
     import MineArcade.protocol.packets.Pool;
-    import MineArcade.protocol.packets.KickClient;
+    import MineArcade.protocol.packets.general.KickClient;
+    import MineArcade.utils.LPromise;
+    import MineArcade.protocol.packets.general.UDPConnection;
+    import MineArcade.protocol.packets.general.ServerHandshake;
+    import MineArcade.protocol.packets.ServerPacket;
+    import flash.utils.setTimeout;
 
-    public class HandshakeFinisher {
-        public function HandshakeFinisher(cor:CorArcade, ok_cb:Function) {
-            var handshake:Handshake = new Handshake(cor.getPacketWriter(), cor.getPacketHander());
-            cor.getConnection().hookConnectionListener(function():void {
-                handshake.sendHandshake(function(success:Boolean, msg:String):void {
-                    if (success) {
-                        TopMessage.show("登录已就绪")
-                        ok_cb()
-                    } else {
-                        trace("[error] handshake: " + msg)
-                        TipWindow.error("连接失败: " + msg, 400, 200, function():void {
-                            StageMC.root.gotoAndPlay(1, "Preload")
-                        })
-                        cor.getConnection().close()
-                    }
-                })
-            });
-            cor.getConnection().hookDisconnectionListener(function():void {
+    /**
+     * 完成服务端-客户端握手。
+     * @param cor CorArcade
+     * @param ok_cb 成功后执行的回调
+     */
+    public function HandshakeFinisher(cor:CorArcade, ok_cb:Function):void {
+        var handshake:Handshake = new Handshake(cor.getPacketWriter(), cor.getPacketHander());
+        cor.getTCPConnection().hookConnectionListener(function():void {
+            handshake.sendHandshake().then(function(cb:Function, res:ServerHandshake, ok:Boolean):void {
+                if (!ok) {
+                    trace("[error] handshake: timeout")
+                    TipWindow.error("连接失败: 连接超时", 400, 200, function():void {
+                        StageMC.Restart()
+                    })
+                } else if (res.Success) {
+                    TopMessage.show("登录已就绪")
+                } else {
+                    trace("[error] handshake: " + res.ServerMessage)
+                    TipWindow.error("连接失败: " + res.ServerMessage, 400, 200, function():void {
+                        StageMC.Restart()
+                    })
+                    cor.getTCPConnection().close()
+                }
+                setTimeout(cb, 10, res)
+            }).$then(function(res:ServerHandshake):Boolean {
+                return (res is ServerHandshake) && res.Success
+            }, function(ok:Function, res:ServerHandshake):void {
+                cor.getPacketWriter().WritePacket(new UDPConnection(res.VerifyToken))
+                ok_cb()
+            })
+        });
+        cor.getTCPConnection().hookDisconnectionListener(function():void {
+            if (cor.getTCPConnection().connected)
                 TipWindow.error("连接断开", 400, 200, function():void {
-                    StageMC.root.gotoAndPlay(1, "Preload")
+                    StageMC.Restart()
                 })
-                cor.getConnection().close()
+            cor.getTCPConnection().close()
+        })
+        cor.getTCPConnection().hookErrorListener(function(err:String):void {
+            TipWindow.error("连接错误: " + err, 400, 200, function():void {
+                StageMC.Restart()
             })
-            cor.getConnection().hookErrorListener(function(err:String):void {
-                TipWindow.error("连接错误: " + err, 400, 200, function():void {
-                    StageMC.root.gotoAndPlay(1, "Preload")
-                })
-                cor.getConnection().close()
+            cor.getTCPConnection().close()
+        })
+        cor.getPacketHander().addPacketListenerOnce(Pool.IDKickClient, function(p:KickClient):void {
+            TipWindow.error("您已被踢出游戏: " + p.Message, 400, 200, function():void {
+                StageMC.Restart()
             })
-            cor.getPacketHander().addPacketListenerOnce(Pool.IDKickClient, function(p:KickClient):void{
-                TipWindow.error("您已被踢出游戏: " + p.Message, 400, 200, function():void {
-                    StageMC.safeGotoAndPlay(1, "Preload")
-                })
-            })
-            cor.getConnection().setListeners()
-            TopMessage.show("正在连接到服务器..")
-            cor.getConnection().ConnectServer()
-        }
+            cor.getTCPConnection().close()
+        })
+        cor.getTCPConnection().setListeners()
+        cor.getUDPConnection().setListeners()
+        TopMessage.show("正在连接到服务器..")
+        cor.getTCPConnection().ConnectServer()
     }
 }

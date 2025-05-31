@@ -1,5 +1,8 @@
-package MineArcade.protocol.packets {
+package MineArcade.protocol.packets.general {
     import flash.utils.ByteArray;
+    import MineArcade.protocol.packets.ServerPacket;
+    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketNetType;
 
     public class DialLagResp implements ServerPacket {
         public var dialUUID:String;
@@ -10,6 +13,10 @@ package MineArcade.protocol.packets {
 
         public function ID():int {
             return Pool.IDDialLagResp
+        }
+
+        public function NetType(): int{
+            return PacketNetType.TCP
         }
 
         public function Unmarshal(r:ByteArray):void {

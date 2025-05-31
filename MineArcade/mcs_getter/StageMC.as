@@ -41,16 +41,34 @@ package MineArcade.mcs_getter {
         public static function safeGotoAndPlay(frame:int, scene:*):void {
             if (scene == undefined)
                 scene = root.currentScene.name
+            var root_mcs: Array = [];
             for (var i:int = root.numChildren - 1; i >= 0; i--) {
                 var elem:* = StageMC.root.getChildAt(i)
-                if (!(elem is MovieClip))
+                if (!(elem is MovieClip) || elem["isTransition"] != undefined || !elem["isTransition"])
                     continue
-                var is_transition:* = elem["isTransition"]
-                if (is_transition != undefined && !is_transition) {
-                    root.removeChildAt(i)
-                }
+                root_mcs.push(elem)
             }
-            root.safeGotoAndPlay(frame, scene)
+            for each (var mc:MovieClip in root_mcs) {
+                root.removeChild(mc)
+            }
+            root.gotoAndPlay(frame, scene)
+        }
+
+        public static function Restart():void{
+            clearStage()
+            safeGotoAndPlay(1, "Preload")
+        }
+
+        public static function clearStage():void {
+            var mcs: Array = [];
+            for (var i:int = 0; i < root.numChildren; i++) {
+                var elem:* = root.getChildAt(i);
+                //if (elem is MovieClip)
+                mcs.push(elem)
+            }
+            for each (var mc:* in mcs) {
+                root.removeChild(mc)
+            }
         }
     }
 }
