@@ -1,6 +1,6 @@
 # MineArcade 小游戏客户端
 
-本项目同时作为仓库主[（SuperScript）](https://github.com/SuperScript-PRC)的程序实践课设。
+本项目同时作为仓库主[（SuperScript）](https://github.com/SuperScript-PRC) 的程序实践课设。
 
 ---
 
@@ -8,8 +8,9 @@
 
 ---
 
-Flash 文件版本： Adobe Animate 2020
+Flash 文件版本：Adobe Animate 2020
 Flash Player 版本：Flash Player 26
 ActionScript 版本：ActionScript 3.0
+Adobe AIR 版本：AIR 51.2.1.4
 
-由于 Flash 源文件过大，其不会被包含在此仓库中。如需取得，请通过邮箱联系仓库主。
+Flash 源文件未附带在仓库内。
