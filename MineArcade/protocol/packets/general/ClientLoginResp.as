@@ -1,7 +1,7 @@
 package MineArcade.protocol.packets.general {
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.ServerPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
 
     public class ClientLoginResp implements ServerPacket {
@@ -16,7 +16,7 @@ package MineArcade.protocol.packets.general {
         }
 
         public function ID():int {
-            return Pool.IDClientLoginResp
+            return PacketIDs.IDClientLoginResp
         }
 
         public function NetType(): int{

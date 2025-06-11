@@ -5,6 +5,10 @@
     import MineArcade.utils.LPromise;
 
     public class CutScene {
+        /**
+         * 进行全屏专场。
+         * @return LPromise<void>
+         */
         public static function cutScene():LPromise {
             var smc:MovieClip = Scenes.createCutSceneMC()
             smc.x = 0
@@ -15,7 +19,7 @@
             smc.isTransition = true
             return new LPromise(function(ok:Function):void {
                 smc.setOKCB(function():void {
-                    ok(null)
+                    ok()
                 })
                 StageMC.root.addChild(smc)
             })

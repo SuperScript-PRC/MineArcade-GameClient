@@ -1,7 +1,7 @@
 package MineArcade.arcades.public_minearea {
     import flash.display.MovieClip;
     import flash.utils.ByteArray;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.core.CorArcade;
     import MineArcade.define.StageData;
     import flash.events.MouseEvent;
@@ -29,14 +29,14 @@ package MineArcade.arcades.public_minearea {
         private var start_x: Number;
         private var start_y: Number;
 
-        public function MineAreaMap(core:CorArcade):void {
+        function MineAreaMap(core:CorArcade){
             this.core = core
         }
 
         public function Entry():void {
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, Pool.IDPublicMineAreaChunk, this.handleChunk)
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, Pool.IDPublicMineareaBlockEvent, this.handleBlockModified)
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, Pool.IDPublicMineareaPlayerActorData, this.handlePlayer)
+            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineAreaChunk, this.handleChunk)
+            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineareaBlockEvent, this.handleBlockModified)
+            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineareaPlayerActorData, this.handlePlayer)
             EventContext.Create(this, StageMC.stage, MouseEvent.MOUSE_DOWN, this.handleMouseDown)
             EventContext.Create(this, StageMC.stage, MouseEvent.MOUSE_UP, this.handleMouseUp)
             EventContext.Create(this, StageMC.stage, KeyboardEvent.KEY_DOWN, function (e:KeyboardEvent):void{
@@ -73,25 +73,25 @@ package MineArcade.arcades.public_minearea {
             })
         }
 
-        public function AddPlayer(playername:String, uuid:String, x:int, y:int, is_client_player:Boolean):void {
-            var p:WorldPlayer = new WorldPlayer(playername, uuid, is_client_player, this)
+        public function AddPlayer(playername:String, uid:String, x:int, y:int, is_client_player:Boolean):void {
+            var p:WorldPlayer = new WorldPlayer(playername, uid, is_client_player, this)
             if (p.is_cli_player)
                 this.client_player = p
-            if (players[p.uuid] != undefined) {
-                trace("[PublicMineArea] 警告: 玩家 UUID=" + p.uuid + " 已存在。")
+            if (players[p.uid] != undefined) {
+                trace("[PublicMineArea] 警告: 玩家 UUID=" + p.uid + " 已存在。")
                 return
             }
-            players[p.uuid] = p
+            players[p.uid] = p
             this.addChild(p)
         }
 
-        public function RemovePlayer(uuid:String):void {
-            if (players[uuid] != undefined) {
-                trace("[PublicMineArea] 警告: 玩家 UUID=" + uuid + " 不存在。")
+        public function RemovePlayer(uid:String):void {
+            if (players[uid] != undefined) {
+                trace("[PublicMineArea] 警告: 玩家 UUID=" + uid + " 不存在。")
                 return
             }
-            this.removeChild(players[uuid])
-            delete players[uuid]
+            this.removeChild(players[uid])
+            delete players[uid]
         }
 
         public function MapMoveRelative():void {
@@ -148,7 +148,7 @@ package MineArcade.arcades.public_minearea {
 
         private function handlePlayer(pk:PublicMineareaPlayerActorData):void {
             if (pk.Action == 1)
-                this.AddPlayer(pk.Nickname, pk.UUIDStr, pk.X, pk.Y, pk.UUIDStr == this.client_player.uuid)
+                this.AddPlayer(pk.Nickname, pk.UUIDStr, pk.X, pk.Y, pk.UUIDStr == this.client_player.uid)
             else if (pk.Action == 2)
                 this.RemovePlayer(pk.UUIDStr)
             else if (pk.Action == 0) {

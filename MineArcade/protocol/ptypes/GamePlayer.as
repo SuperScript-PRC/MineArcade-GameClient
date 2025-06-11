@@ -1,4 +1,4 @@
-package MineArcade.protocol
+package MineArcade.protocol.ptypes
 {
     import flash.utils.ByteArray;
 

@@ -12,7 +12,7 @@ package MineArcade.arcades.public_minearea {
             Textures.LoadItemTextures()]).last(function():void {
                 core.getPacketWriter().WritePacket(new StartGame(GameType.PUBLIC_MINEAREA, ""))
                 var map:MineAreaMap = new MineAreaMap(Main.GCore)
-                map.AddPlayer(core.getUserData().nickname, core.getUserData().uuid, 0, 0, true)
+                map.AddPlayer(core.getUserData().nickname, core.getUserData().uid, 0, 0, true)
                 StageMC.root.addChild(map)
                 map.Entry()
             })

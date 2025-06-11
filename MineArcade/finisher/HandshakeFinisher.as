@@ -4,12 +4,10 @@ package MineArcade.finisher {
     import MineArcade.gui.TipWindow
     import MineArcade.gui.TopMessage
     import MineArcade.core.CorArcade;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.general.KickClient;
-    import MineArcade.utils.LPromise;
     import MineArcade.protocol.packets.general.UDPConnection;
     import MineArcade.protocol.packets.general.ServerHandshake;
-    import MineArcade.protocol.packets.ServerPacket;
     import flash.utils.setTimeout;
 
     /**
@@ -56,7 +54,7 @@ package MineArcade.finisher {
             })
             cor.getTCPConnection().close()
         })
-        cor.getPacketHander().addPacketListenerOnce(Pool.IDKickClient, function(p:KickClient):void {
+        cor.getPacketHander().addPacketListenerOnce(PacketIDs.IDKickClient, function(p:KickClient):void {
             TipWindow.error("您已被踢出游戏: " + p.Message, 400, 200, function():void {
                 StageMC.Restart()
             })

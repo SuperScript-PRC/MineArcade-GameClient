@@ -2,7 +2,7 @@ package MineArcade.protocol.packets.lobby {
     import flash.utils.ByteArray;
     import MineArcade.protocol.PacketReader;
     import MineArcade.protocol.packets.ServerPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
 
     public class BackpackResponse implements ServerPacket{
@@ -13,7 +13,7 @@ package MineArcade.protocol.packets.lobby {
         }
 
         public function ID():int {
-            return Pool.IDBackpackResponse
+            return PacketIDs.IDBackpackResponse
         }
 
         public function NetType(): int{
@@ -21,11 +21,7 @@ package MineArcade.protocol.packets.lobby {
         }
 
         public function Unmarshal(r:ByteArray):void {
-            this.Items = PacketReader.readArray(r, function(r:ByteArray):Item {
-                var it:Item = new Item()
-                it.Unmarshal(r)
-                return it
-            })
+            this.Items = PacketReader.readArray(r, Item)
         }
     }
 }

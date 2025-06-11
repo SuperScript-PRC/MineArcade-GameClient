@@ -1,7 +1,7 @@
 package MineArcade.protocol.packets.general {
     import MineArcade.protocol.GamePlayer;
     import MineArcade.protocol.packets.ServerPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
 
     public class WorldChat {
         public var ChatPlayer:GamePlayer
@@ -13,7 +13,7 @@ package MineArcade.protocol.packets.general {
         }
 
         public function ID():int {
-            return Pool.IDWorldChat
+            return PacketIDs.IDWorldChat
         }
     }
 }

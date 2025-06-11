@@ -1,6 +1,6 @@
 package MineArcade.protocol.packets.lobby {
     import flash.utils.ByteArray;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.ServerPacket;
     import MineArcade.protocol.packets.PacketNetType;
 
@@ -16,7 +16,7 @@ package MineArcade.protocol.packets.lobby {
         }
 
         public function ID():int {
-            return Pool.IDArcadeEntryResponse
+            return PacketIDs.IDArcadeEntryResponse
         }
 
         public function NetType(): int{

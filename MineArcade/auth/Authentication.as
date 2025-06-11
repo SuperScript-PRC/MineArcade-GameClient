@@ -3,7 +3,7 @@ package MineArcade.auth {
     import MineArcade.utils.md5;
     import MineArcade.protocol.PacketHandler;
     import MineArcade.core.CorArcade;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.general.ClientLogin;
     import MineArcade.protocol.packets.general.ClientLoginResp;
     import MineArcade.utils.LPromise;
@@ -30,7 +30,7 @@ package MineArcade.auth {
             pk.Username = username
             pk.Password = getBase64OfMD5(password + "minearc#01")
             hooked_packet_sender.WritePacket(pk);
-            var p:LPromise = hooked_packet_handler.waitForPacket(Pool.IDClientLoginResp, 10000).then(function(cb:Function, pk:ClientLoginResp, ok:Boolean):void {
+            var p:LPromise = hooked_packet_handler.waitForPacket(PacketIDs.IDClientLoginResp, 10000).then(function(cb:Function, pk:ClientLoginResp, ok:Boolean):void {
                 if (ok)
                     cb(pk.Success, pk.Message, pk.StatusCode)
                 else

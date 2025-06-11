@@ -3,7 +3,7 @@ package MineArcade.user {
     import MineArcade.core.CorArcade;
 
     public class UserData {
-        public var uuid:String;
+        public var uid:String;
         public var nickname:String;
         public var password:String;
         public var money:Number;

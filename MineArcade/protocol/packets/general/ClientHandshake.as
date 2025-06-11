@@ -2,7 +2,7 @@ package MineArcade.protocol.packets.general
 {
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.ClientPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
     
 
@@ -14,7 +14,7 @@ package MineArcade.protocol.packets.general
         }
 
         public function ID():int{
-            return Pool.IDClientHandshake
+            return PacketIDs.IDClientHandshake
         }
 
         public function NetType():int{

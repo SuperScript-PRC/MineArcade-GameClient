@@ -2,7 +2,7 @@ package MineArcade.protocol.packets.arcade {
 
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.ClientPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
 
     public class StartGame implements ClientPacket {
@@ -15,7 +15,7 @@ package MineArcade.protocol.packets.arcade {
         }
 
         public function ID(): int {
-            return Pool.IDStartGame
+            return PacketIDs.IDStartGame
         }
 
         public function NetType(): int {

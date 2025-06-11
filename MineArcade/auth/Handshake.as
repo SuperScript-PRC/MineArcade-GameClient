@@ -2,7 +2,7 @@ package MineArcade.auth {
     import flash.utils.setTimeout;
     import MineArcade.protocol.PacketHandler;
     import MineArcade.protocol.PacketWriter;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.general.ClientHandshake;
     import MineArcade.utils.LPromise;
 
@@ -25,7 +25,7 @@ package MineArcade.auth {
             var pk:ClientHandshake = new ClientHandshake()
             pk.ClientVersion = define.CLIENT_VERSION
             hooked_packet_sender.WritePacket(pk);
-            return hooked_packet_listener.waitForPacket(Pool.IDServerHandshake, HANDSHAKE_TIMEOUT_TIME)
+            return hooked_packet_listener.waitForPacket(PacketIDs.IDServerHandshake, HANDSHAKE_TIMEOUT_TIME)
         }
     }
 }

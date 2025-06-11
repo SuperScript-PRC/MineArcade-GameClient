@@ -2,7 +2,7 @@ package MineArcade.protocol.packets.arcade.public_minearea {
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.ClientPacket;
     import MineArcade.protocol.packets.ServerPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
 
     public class PublicMineareaPlayerActorData implements ClientPacket, ServerPacket {
@@ -21,7 +21,7 @@ package MineArcade.protocol.packets.arcade.public_minearea {
         }
 
         public function ID():int {
-            return Pool.IDPublicMineareaPlayerActorData
+            return PacketIDs.IDPublicMineareaPlayerActorData
         }
 
         public function NetType(): int{
@@ -31,16 +31,16 @@ package MineArcade.protocol.packets.arcade.public_minearea {
         public function Unmarshal(r:ByteArray):void {
             this.Nickname = r.readUTF();
             this.UUIDStr = r.readUTF();
-            this.X = r.readDouble();
-            this.Y = r.readDouble();
+            this.X = r.readFloat();
+            this.Y = r.readFloat();
             this.Action = r.readByte();
         }
 
         public function Marshal(w:ByteArray):void {
             w.writeUTF(this.Nickname)
             w.writeUTF(this.UUIDStr);
-            w.writeDouble(this.X);
-            w.writeDouble(this.Y);
+            w.writeFloat(this.X);
+            w.writeFloat(this.Y);
             w.writeByte(this.Action);
         }
     }

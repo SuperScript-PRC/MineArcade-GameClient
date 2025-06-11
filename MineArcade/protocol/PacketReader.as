@@ -11,17 +11,26 @@ package MineArcade.protocol {
     public class PacketReader {
         private var tcp_socket:Socket;
         private var udp_socket:*;
+        private const server_packet_pool:Object = Pool.GetServerPool();
 
         function PacketReader(tcp_socket:Socket, udp_socket:*) {
             this.tcp_socket = tcp_socket;
             this.udp_socket = udp_socket;
         }
 
-        public static function readArray(reader:ByteArray, unmarshaler:Function):Array {
+        /**
+         * 读取一个 Array。
+         * @param reader ByteArray
+         * @param class_support_unmarshal 支持 Unmarshal 的类
+         * @return Array.<Instance<class_support_unmarshal>>
+         */
+        public static function readArray(reader:ByteArray, class_support_unmarshal:Class):Array {
             var arr:Array = [];
             var arr_length:int = reader.readInt();
             for (var i:Number = 0; i < arr_length; i++) {
-                arr.push(unmarshaler(reader));
+                var o:Object = new class_support_unmarshal();
+                o.Unmarshal(reader);
+                arr.push(o);
             }
             return arr;
         }
@@ -48,49 +57,16 @@ package MineArcade.protocol {
         }
 
         public function DecodePacket(buf:ByteArray, pk_size:int):ServerPacket {
-            var pk:ServerPacket;
             var pkID:int = buf.readInt();
-            switch (pkID) {
-                case Pool.IDServerHandshake:
-                    pk = new ServerHandshake();
-                    break;
-                case Pool.IDClientLoginResp:
-                    pk = new ClientLoginResp();
-                    break;
-                case Pool.IDKickClient:
-                    pk = new KickClient();
-                    break;
-                case Pool.IDDialLagResp:
-                    pk = new DialLagResp();
-                    break;
-                case Pool.IDPlayerBasics:
-                    pk = new PlayerBasics();
-                    break;
-                case Pool.IDBackpackResponse:
-                    pk = new BackpackResponse();
-                    break;
-                case Pool.IDSimpleEvent:
-                    pk = new SimpleEvent();
-                    break;
-                case Pool.IDPublicMineAreaChunk:
-                    pk = new PublicMineAreaChunk();
-                    break;
-                case Pool.IDPublicMineareaBlockEvent:
-                    pk = new PublicMineareaBlockEvent();
-                    break;
-                case Pool.IDPublicMineareaPlayerActorData:
-                    pk = new PublicMineareaPlayerActorData();
-                    break;
-                case Pool.IDArcadeEntryResponse:
-                    pk = new ArcadeEntryResponse();
-                    break;
-                default:
-                    trace("[PacketHandler] Unknown packet ID: " + pkID);
-                    return null;
+            var pk_cls:Class = server_packet_pool[pkID];
+            if (pk_cls == null) {
+                trace("[Error] Unknown packet ID: " + pkID)
+                return null;
             }
+            var pk:ServerPacket = new pk_cls();
             pk.Unmarshal(buf);
-            // trace("read: " + pkID + " = " + JSON.stringify(pk))
-            return pk
+            trace("read: " + pkID + " = " + JSON.stringify(pk))
+            return pk;
         }
     }
 }

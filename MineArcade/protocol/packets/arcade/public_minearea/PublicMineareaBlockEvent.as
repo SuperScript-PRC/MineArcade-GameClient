@@ -2,7 +2,7 @@ package MineArcade.protocol.packets.arcade.public_minearea {
     import flash.utils.ByteArray;
     import MineArcade.protocol.packets.ClientPacket;
     import MineArcade.protocol.packets.ServerPacket;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.protocol.packets.PacketNetType;
 
     public class PublicMineareaBlockEvent implements ClientPacket, ServerPacket {
@@ -17,7 +17,7 @@ package MineArcade.protocol.packets.arcade.public_minearea {
         }
 
         public function ID():int {
-            return Pool.IDPublicMineareaBlockEvent
+            return PacketIDs.IDPublicMineareaBlockEvent
         }
 
         public function NetType(): int{

@@ -13,7 +13,7 @@ package MineArcade.arcades.public_minearea {
     public class WorldPlayer extends MovieClip {
         private var map:MineAreaMap;
         public var playername:String;
-        public var uuid:String
+        public var uid:String
         public var x_speed:Number = 0;
         public var y_speed:Number = 0;
         public var is_cli_player:Boolean;
@@ -21,10 +21,10 @@ package MineArcade.arcades.public_minearea {
         private var walk_a:Number = 0;
         private var is_jump:Boolean = false;
 
-        public function WorldPlayer(playername:String, uuid:String, is_cli_player:Boolean, map:MineAreaMap) {
+        public function WorldPlayer(playername:String, uid:String, is_cli_player:Boolean, map:MineAreaMap) {
             super();
             this.playername = playername
-            this.uuid = uuid
+            this.uid = uid
             this.is_cli_player = is_cli_player
             this.map = map
             var pk_sender:PacketWriter = Main.GCore.getPacketWriter()
@@ -91,7 +91,7 @@ package MineArcade.arcades.public_minearea {
         }
 
         private function uploadActor():void {
-            Main.GCore.getPacketWriter().WritePacket(new PublicMineareaPlayerActorData("", this.uuid, this.x / 32, (MAP_BORDER_Y - this.y) / 32))
+            Main.GCore.getPacketWriter().WritePacket(new PublicMineareaPlayerActorData("", this.uid, this.x / 32, (MAP_BORDER_Y - this.y) / 32))
         }
 
         private function getHit():Object {

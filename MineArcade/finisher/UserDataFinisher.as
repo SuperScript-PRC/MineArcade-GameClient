@@ -3,7 +3,7 @@ package MineArcade.finisher {
     import MineArcade.user.UserData;
     import MineArcade.gui.TipWindow;
     import MineArcade.core.Main;
-    import MineArcade.protocol.packets.Pool;
+    import MineArcade.protocol.packets.PacketIDs;
     import MineArcade.utils.LPromise;
     import MineArcade.protocol.packets.lobby.PlayerBasics;
 
@@ -20,11 +20,11 @@ package MineArcade.finisher {
          */
         public function finishUserData():LPromise {
             var ok:Boolean = false;
-            return cor.getPacketHander().waitForPacket(Pool.IDPlayerBasics, 20000).then(function(cb:Function, pk:PlayerBasics, ok:Boolean):void {
+            return cor.getPacketHander().waitForPacket(PacketIDs.IDPlayerBasics, 20000).then(function(cb:Function, pk:PlayerBasics, ok:Boolean):void {
                 if (ok) {
                     var ud:UserData = cor.getUserData()
                     ud.nickname = pk.Nickname
-                    ud.uuid = pk.UUID
+                    ud.uid = pk.UID
                     ud.money = pk.Money
                     ud.power = pk.Power
                     ud.points = pk.Points
