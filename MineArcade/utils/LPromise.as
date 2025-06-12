@@ -27,7 +27,7 @@ package MineArcade.utils{
             } else if (this._last_func is Function) {
                 this._last_func.apply(null, results)
             } else {
-                trace("Warning: no callback function (then or last)")
+                throw new Error("Warning: no callback function (then or last)")
             }
         }
 
@@ -98,6 +98,10 @@ package MineArcade.utils{
          */
         public function last(func:Function):void {
             this._last_func = func;
+        }
+
+        public function end():void{
+            this.last(function(..._):void{})
         }
 
         public function activate():void {

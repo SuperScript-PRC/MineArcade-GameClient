@@ -26,7 +26,7 @@ package MineArcade.finisher {
                     ok()
                 }
             }).last(function():void {
-                StageMC.GoArcade("PlaneFighter")
+                StageMC.GoArcade("PlaneFighter").end()
             })
         }
 

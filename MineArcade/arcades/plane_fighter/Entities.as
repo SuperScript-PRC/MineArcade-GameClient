@@ -1,13 +1,11 @@
 package MineArcade.arcades.plane_fighter {
     import MineArcade.utils.TextureStorage;
     import MineArcade.core.CorArcade;
-    import MineArcade.protocol.packets.arcade.StartGame;
     import MineArcade.utils.LPromise;
     import flash.display.Bitmap;
     import MineArcade.protocol.packets.arcade.plane_fighter.PlaneFighterAddActor;
     import MineArcade.mcs_getter.Objects;
     import flash.display.MovieClip;
-    import MineArcade.define.GameType;
     import flash.events.Event;
 
     public class Entities {
@@ -17,16 +15,13 @@ package MineArcade.arcades.plane_fighter {
         /**
          * @param textures Object<texture_name, url>
          */
-        public static function InitAndLoadTextures(core:CorArcade):LPromise {
+        public static function LoadTextures(core:CorArcade):LPromise {
             textures = new TextureStorage();
             return textures.LoadTextures({ //
                     "PlayerPlane": "resources/images/plane_fighter/player_plane.png", //
                     "EnemyPlane": "resources/images/plane_fighter/enemy_plane.png", //
                     "BulletChest": "resources/images/plane_fighter/bullet_chest.png", //
                     "FixingPacket": "resources/images/plane_fighter/fixing_packet.png" //
-                }).then(function(ok:Function):void {
-                    core.getPacketWriter().WritePacket(new StartGame(GameType.PLANE_FIGHTER, ""))
-                    ok()
                 })
         }
 

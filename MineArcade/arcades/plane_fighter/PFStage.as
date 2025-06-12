@@ -18,8 +18,11 @@ package MineArcade.arcades.plane_fighter {
     import flash.utils.getTimer;
     import flash.events.Event;
     import MineArcade.protocol.ptypes.PFPlayerStatus;
+    import MineArcade.protocol.packets.arcade.ArcadeGameComplete;
+    import MineArcade.sounds.BGMPlayer;
 
     public class PFStage {
+        internal var bgm:BGMPlayer = new BGMPlayer("resources/sounds/theme/雷霆战机.mp3")
         internal var players:Object = {}; // { [RuntimeID]:Player }
         internal var entities:Object = {}; // { [RuntimeID]:Entity }
         internal var core:CorArcade;
@@ -34,6 +37,7 @@ package MineArcade.arcades.plane_fighter {
             this.core = core
             this.joystick = new JoyStick()
             this.setListeners()
+            bgm.play()
         }
 
         public function GetPlayer(runtimeId:int):PlaneFighterEntity {
@@ -42,6 +46,11 @@ package MineArcade.arcades.plane_fighter {
 
         public function GetEntity(runtimeId:int):PlaneFighterEntity {
             return this.entities[runtimeId]
+        }
+
+        public function PrepareExit():void {
+            this.removeListeners()
+            this.joystick.Unload()
         }
 
         private function setListeners():void {
@@ -53,6 +62,7 @@ package MineArcade.arcades.plane_fighter {
             hdl.addPacketListener(PacketIDs.IDPlaneFighterScores, onScore)
             hdl.addPacketListener(PacketIDs.IDPlaneFighterStage, onStage)
             hdl.addPacketListener(PacketIDs.IDPlaneFighterPlayerStatuses, onStatuses)
+            hdl.addPacketListener(PacketIDs.IDArcadeGameComplete, onComplete)
             StageMC.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
             StageMC.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp)
             StageMC.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame)
@@ -67,6 +77,7 @@ package MineArcade.arcades.plane_fighter {
             hdl.removePacketListener(PacketIDs.IDPlaneFighterScores, onScore)
             hdl.removePacketListener(PacketIDs.IDPlaneFighterStage, onStage)
             hdl.removePacketListener(PacketIDs.IDPlaneFighterPlayerStatuses, onStatuses)
+            hdl.removePacketListener(PacketIDs.IDArcadeGameComplete, onComplete)
             StageMC.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
             StageMC.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp)
             StageMC.stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame)
@@ -205,6 +216,7 @@ package MineArcade.arcades.plane_fighter {
                         }
                         Effects.CreateExplode(e.x, e.y)
                         this.RemoveEntity(e)
+                        SFX.explode.play()
                         break;
                     case PlaneFighterEvent.EVENT_COLORFUL_EXPLODE:
                         e = this.entities[evt.EntityRuntimeID]
@@ -214,6 +226,7 @@ package MineArcade.arcades.plane_fighter {
                         }
                         Effects.CreateColourfulExplode(e.x, e.y)
                         this.RemoveEntity(e)
+                        SFX.bonus_1.play()
                         break;
                     default:
                         trace("[Warning] Unknown event ", evt.EventID, "for entity:", evt.EntityRuntimeID)
@@ -275,6 +288,32 @@ package MineArcade.arcades.plane_fighter {
                     StageMC.root.addChild(bullet)
                 }
             }
+        }
+
+        private function onComplete(pk:ArcadeGameComplete):void {
+            StageMC.root.gotoAndStop(3, "PlaneFighter")
+            var players:Array = [];
+            for each (var player:PlaneFighterEntity in this.players) {
+                players.push(player)
+            }
+            for each (player in players){
+                this.RemoveEntity(player)
+                Effects.CreateColourfulExplode(player.x, player.y)
+            }
+            var details:Array = pk.ScoreDetails
+            var rawScore:int = details[0].Score
+            var hpScore:int = details[1].Score
+            var bulletScore:int = details[2].Score
+            var damageScore:int = details[3].Score
+            var totalScore:int = pk.TotalScore
+            const scb:MovieClip = StageMC.root.scoreboard
+            scb.OrigScore = rawScore
+            scb.HPScore = hpScore
+            scb.BulletScore = bulletScore
+            scb.DamageScore = damageScore
+            scb.TotalScore = totalScore
+            scb.Win = pk.Win
+            PrepareExit()
         }
     }
 }

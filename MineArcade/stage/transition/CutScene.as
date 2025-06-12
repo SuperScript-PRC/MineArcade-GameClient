@@ -16,7 +16,7 @@
             smc.setDetectCB(function():Boolean {
                 return true
             })
-            smc.isTransition = true
+            smc["isTransition"] = true
             return new LPromise(function(ok:Function):void {
                 smc.setOKCB(function():void {
                     ok()
@@ -34,7 +34,7 @@
                 return _ok
             }
             smc.setDetectCB(is_ok)
-            smc.isTransition = true
+            smc["isTransition"] = true
             return new LPromise(function(ok:Function):void {
                 smc.setOKCB(ok)
                 StageMC.root.addChild(smc)
