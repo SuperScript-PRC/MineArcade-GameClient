@@ -43,6 +43,7 @@ package MineArcade.protocol.packets {
         public static const IDPlaneFighterPlayerEvent:int = iota();
         public static const IDPlaneFighterTimer:int = iota();
         public static const IDPlaneFighterScores:int = iota();
+        public static const IDPlaneFighterPlayerStatuses:int = iota();
         // Max
         public static const MaxPacketID:int = iota();
     }

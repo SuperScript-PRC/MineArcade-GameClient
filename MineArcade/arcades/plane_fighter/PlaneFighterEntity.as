@@ -5,6 +5,7 @@ package MineArcade.arcades.plane_fighter {
     public class PlaneFighterEntity extends MovieClip {
         public var entity_type:int;
         public var runtimeId:int;
+        internal var keep:Boolean;
 
         function PlaneFighterEntity(entity_type:int, x:Number, y:Number, runtimeId:int) {
             this.entity_type = entity_type;

@@ -25,7 +25,7 @@ package MineArcade.protocol.packets.arcade.plane_fighter
         }
 
         public function Unmarshal(r:ByteArray):void {
-            PacketReader.readArray(r, PlaneFighterPlayerEntry)
+            this.Entries = PacketReader.readArray(r, PlaneFighterPlayerEntry)
         }
     }
 }

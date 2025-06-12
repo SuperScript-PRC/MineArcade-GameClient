@@ -6,5 +6,9 @@ package MineArcade.mcs_getter
         public static function createCloud():MovieClip{
             return new Cloud()
         }
+
+        public static function createBullet():MovieClip{
+            return new Bullet()
+        }
     }
 }

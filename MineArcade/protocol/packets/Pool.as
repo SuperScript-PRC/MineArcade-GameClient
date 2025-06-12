@@ -30,6 +30,7 @@ package MineArcade.protocol.packets
             pool[PacketIDs.IDPlaneFighterStage] = PlaneFighterStage
             pool[PacketIDs.IDPlaneFighterTimer] = PlaneFighterTimer
             pool[PacketIDs.IDPlaneFighterScores] = PlaneFighterScores;
+            pool[PacketIDs.IDPlaneFighterPlayerStatuses] = PlaneFighterPlayerStatuses
             return pool
         }
     }

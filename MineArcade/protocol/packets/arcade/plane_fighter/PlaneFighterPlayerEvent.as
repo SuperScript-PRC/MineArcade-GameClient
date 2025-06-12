@@ -7,7 +7,7 @@ package MineArcade.protocol.packets.arcade.plane_fighter {
 
     public class PlaneFighterPlayerEvent implements ClientPacket {
         private static const iota:Function = new Iota().iota;
-        public static const StartFire:int = iota(0);
+        public static const StartFire:int = iota();
 	    public static const StopFire:int = iota();
 
         public var EventID:int;

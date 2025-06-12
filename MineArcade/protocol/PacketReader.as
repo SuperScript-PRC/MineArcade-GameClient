@@ -65,7 +65,7 @@ package MineArcade.protocol {
             }
             var pk:ServerPacket = new pk_cls();
             pk.Unmarshal(buf);
-            trace("read: " + pkID + " = " + JSON.stringify(pk))
+            // trace("read: " + pkID + " = " + JSON.stringify(pk))
             return pk;
         }
     }
