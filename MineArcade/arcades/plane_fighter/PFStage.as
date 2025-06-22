@@ -22,7 +22,7 @@ package MineArcade.arcades.plane_fighter {
     import MineArcade.sounds.BGMPlayer;
 
     public class PFStage {
-        internal var bgm:BGMPlayer = new BGMPlayer("resources/sounds/theme/雷霆战机.mp3")
+        internal var bgm:BGMPlayer = new BGMPlayer("resources/sounds/theme/PlaneFighter.mp3")
         internal var players:Object = {}; // { [RuntimeID]:Player }
         internal var entities:Object = {}; // { [RuntimeID]:Entity }
         internal var core:CorArcade;

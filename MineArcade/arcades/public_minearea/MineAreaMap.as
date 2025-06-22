@@ -107,12 +107,14 @@ package MineArcade.arcades.public_minearea {
             if (chunk == null)
                 if(!ignore_faults)
                     throw new Error("Chunk not found: " + chunkX + ", " + chunkY)
-                else
+                else {
+                    trace("Chunk not found: " + chunkX + ", " + chunkY)
                     return null
+                }
             return chunk
         }
 
-        public function GetBlock(blockX:int, blockY:int, ignore_faults:Boolean=false):MineBlock {
+        public function GetBlock(blockX:int, blockY:int, ignore_faults:Boolean=true):MineBlock {
             if (blockX < 0 || blockX >= define.MAP_BORDER_X || blockY < 0 || blockY >= define.MAP_BORDER_X)
                 return null
             var chunk:Chunk = this.GetChunk(int(blockX / define.CHUNK_SIZE), int(blockY / define.CHUNK_SIZE), ignore_faults)
