@@ -7,7 +7,11 @@ package MineArcade.stage.transition {
             var elem:* = StageMC.root.getChildAt(i)
             if (!(elem is MovieClip))
                 continue
-            var is_transition:* = elem["isTransition"]
+            try {
+                var is_transition:* = elem["isTransition"]
+            } catch (e:Error) {
+                is_transition = false;
+            }
             if (is_transition == undefined || !is_transition) {
                 StageMC.root.removeChildAt(i)
             }

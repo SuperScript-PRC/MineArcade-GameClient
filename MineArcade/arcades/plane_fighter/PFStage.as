@@ -66,6 +66,7 @@ package MineArcade.arcades.plane_fighter {
             StageMC.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
             StageMC.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp)
             StageMC.stage.addEventListener(Event.ENTER_FRAME, onEnterFrame)
+            StageMC.RegistExit(PrepareExit)
         }
 
         private function removeListeners():void {
@@ -95,7 +96,11 @@ package MineArcade.arcades.plane_fighter {
         }
 
         public function RemoveEntity(entity:PlaneFighterEntity):void {
-            StageMC.root.removeChild(entity);
+            try{
+                StageMC.root.removeChild(entity);
+            }catch(e:Error){
+                trace("Warning: RemoveEntity:", e);
+            }
             delete this.entities[entity.runtimeId];
         }
 
@@ -167,7 +172,7 @@ package MineArcade.arcades.plane_fighter {
         private function onScore(pk:PlaneFighterScores):void {
             for each (var scoredata:PlaneFighterScore in pk.Scores) {
                 if (scoredata.PlayerRuntimeID == myRuntimeID) {
-                    StageMC.root.score_text.text = "Score: " + Formatter.zero(scoredata.TotalScore, 8)
+                    StageMC.root.score_text.text = "Score: " + Formatter.zero(scoredata.TotalScore, 6)
                 }
             }
         }
@@ -313,7 +318,6 @@ package MineArcade.arcades.plane_fighter {
             scb.DamageScore = damageScore
             scb.TotalScore = totalScore
             scb.Win = pk.Win
-            PrepareExit()
         }
     }
 }

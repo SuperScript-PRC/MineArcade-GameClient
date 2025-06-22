@@ -17,12 +17,12 @@
 	</name>
 -->
 <application xmlns="http://ns.adobe.com/air/application/32.0">
-  <id>main</id>
+  <id>com.superscript.minearcade</id>
   <versionNumber>1.0</versionNumber>
-  <filename>main</filename>
-  <description/>
-  <name>main</name>
-  <copyright/>
+  <filename>MineArcade</filename>
+  <description>MineArcade 小游戏客户端 - 程序设计</description>
+  <name>MineArcade</name>
+  <copyright>2025 GXU SuperScript</copyright>
   <initialWindow>
     <content>main.swf</content>
     <systemChrome>standard</systemChrome>
@@ -31,8 +31,13 @@
     <fullScreen>false</fullScreen>
     <aspectRatio>portrait</aspectRatio>
     <renderMode>auto</renderMode>
+    <maximizable>true</maximizable>
+    <minimizable>true</minimizable>
+    <resizable>true</resizable>
   </initialWindow>
-  <icon/>
+  <icon>
+    
+  </icon>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>
-</application>
+  </application>

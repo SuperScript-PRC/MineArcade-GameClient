@@ -34,43 +34,63 @@ package MineArcade.arcades.public_minearea {
         }
 
         public function Entry():void {
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineAreaChunk, this.handleChunk)
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineareaBlockEvent, this.handleBlockModified)
-            this.core.getPacketHander().addPacketListenerBoundingMC(this, PacketIDs.IDPublicMineareaPlayerActorData, this.handlePlayer)
-            EventContext.Create(this, StageMC.stage, MouseEvent.MOUSE_DOWN, this.handleMouseDown)
-            EventContext.Create(this, StageMC.stage, MouseEvent.MOUSE_UP, this.handleMouseUp)
-            EventContext.Create(this, StageMC.stage, KeyboardEvent.KEY_DOWN, function (e:KeyboardEvent):void{
-                if (e.keyCode == Keyboard.CONTROL) {
-                    displayMousePosition()
-                }
-                if (e.keyCode == Keyboard.G) {
-                    start_x = mouseX
-                    start_y = mouseY
-                }
+            this.setListeners()
+        }
+
+        private function setListeners():void{
+            this.core.getPacketHander().addPacketListener( PacketIDs.IDPublicMineAreaChunk, this.handleChunk)
+            this.core.getPacketHander().addPacketListener(PacketIDs.IDPublicMineareaBlockEvent, this.handleBlockModified)
+            this.core.getPacketHander().addPacketListener(PacketIDs.IDPublicMineareaPlayerActorData, this.handlePlayer)
+            StageMC.stage.addEventListener(MouseEvent.MOUSE_DOWN, this.handleMouseDown)
+            StageMC.stage.addEventListener(MouseEvent.MOUSE_UP, this.handleMouseUp)
+            StageMC.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown)
+            StageMC.stage.addEventListener(KeyboardEvent.KEY_UP, handleKeyUp)
+            StageMC.RegistExit(function():void{
+                core.getPacketHander().removePacketListener(PacketIDs.IDPublicMineAreaChunk, handleChunk)
+                core.getPacketHander().removePacketListener(PacketIDs.IDPublicMineareaBlockEvent, handleBlockModified)
+                core.getPacketHander().removePacketListener(PacketIDs.IDPublicMineareaPlayerActorData, handlePlayer)
+                StageMC.stage.removeEventListener(MouseEvent.MOUSE_DOWN, handleMouseDown)
+                StageMC.stage.removeEventListener(MouseEvent.MOUSE_UP, handleMouseUp)
+                StageMC.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleKeyDown)
+                StageMC.stage.removeEventListener(KeyboardEvent.KEY_UP, handleKeyUp)
+                // spec
+                removeEventListener(Event.ENTER_FRAME, onRepeatDown)
+                trace("IM exited")
             })
-            EventContext.Create(this, StageMC.stage, KeyboardEvent.KEY_UP, function (e:KeyboardEvent):void{
-                if (e.keyCode == Keyboard.G) {
-                    var end_x: Number = mouseX
-                    var end_y: Number = mouseY
-                    var mc:MovieClip = new MovieClip()
-                    mc.graphics.lineStyle(5, 0xff0000)
-                    mc.graphics.moveTo(start_x, start_y)
-                    mc.graphics.lineTo(end_x, end_y)
-                    addChild(mc)
-                    for each (var chunk:Chunk in chunks){
-                        if (chunk == null) continue
-                        var chunk_x: Number = chunk.chunkX * 512
-                        var chunk_y: Number = 16272 - chunk.chunkY * 512
-                        for each (var block:MineBlock in chunk.blocks){
-                            var block_x: Number = chunk_x + block.X * 32
-                            var block_y: Number = chunk_y + 480 - block.Y * 32
-                            // if (block.hitTestPoint(mc)) {
-                            //     modifyBlockAt(block.X, block.Y, 0)
-                            // }
-                        }
-                    }
-                }
-            })
+        }
+
+        public function handleKeyDown(e:KeyboardEvent):void{
+            if (e.keyCode == Keyboard.CONTROL) {
+                displayMousePosition()
+            }
+            if (e.keyCode == Keyboard.G) {
+                start_x = mouseX
+                start_y = mouseY
+            }
+        }
+        
+        public function handleKeyUp(e:KeyboardEvent):void{
+            if (e.keyCode == Keyboard.G) {
+                var end_x: Number = mouseX
+                var end_y: Number = mouseY
+                var mc:MovieClip = new MovieClip()
+                mc.graphics.lineStyle(5, 0xff0000)
+                mc.graphics.moveTo(start_x, start_y)
+                mc.graphics.lineTo(end_x, end_y)
+                addChild(mc)
+                // for each (var chunk:Chunk in chunks){
+                //     if (chunk == null) continue
+                //     var chunk_x: Number = chunk.chunkX * 512
+                //     var chunk_y: Number = 16272 - chunk.chunkY * 512
+                //     for each (var block:MineBlock in chunk.blocks){
+                //         var block_x: Number = chunk_x + block.X * 32
+                //         var block_y: Number = chunk_y + 480 - block.Y * 32
+                //         // if (block.hitTestPoint(mc)) {
+                //         //     modifyBlockAt(block.X, block.Y, 0)
+                //         // }
+                //     }
+                // }
+            }
         }
 
         public function AddPlayer(playername:String, uid:String, x:int, y:int, is_client_player:Boolean):void {

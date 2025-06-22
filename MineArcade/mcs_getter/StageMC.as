@@ -4,10 +4,12 @@ package MineArcade.mcs_getter {
     import flash.display.Stage;
     import MineArcade.stage.transition.CutScene;
     import MineArcade.utils.LPromise;
+    import MineArcade.stage.transition.ClearStage;
 
     public class StageMC {
         public static var stage:Stage;
-        public static var root:MovieClip
+        public static var root:MovieClip;
+        public static var exit_cbs:Array = new Array();
 
         public static function initStage(s:Stage):void {
             stage = s
@@ -26,37 +28,23 @@ package MineArcade.mcs_getter {
         }
 
         public static function safeGotoAndStop(frame:int, scene:String=""):void {
+            execute_exit_cbs()
             if (scene == "")
                 scene = root.currentScene.name
-            for (var i:int = root.numChildren - 1; i >= 0; i--) {
-                var elem:* = StageMC.root.getChildAt(i)
-                if (!(elem is MovieClip))
-                    continue
-                var is_transition:* = elem["isTransition"]
-                if (is_transition != undefined && !is_transition) {
-                    root.removeChildAt(i)
-                }
-            }
+            ClearStage()
             root.gotoAndStop(frame, scene)
         }
 
-        public static function safeGotoAndPlay(frame:int, scene:*):void {
-            if (scene == undefined)
+        public static function safeGotoAndPlay(frame:int, scene:String=""):void {
+            execute_exit_cbs()
+            if (scene == "")
                 scene = root.currentScene.name
-            var root_mcs: Array = [];
-            for (var i:int = root.numChildren - 1; i >= 0; i--) {
-                var elem:* = StageMC.root.getChildAt(i)
-                if (!(elem is MovieClip) || elem["isTransition"] != undefined || !elem["isTransition"])
-                    continue
-                root_mcs.push(elem)
-            }
-            for each (var mc:MovieClip in root_mcs) {
-                root.removeChild(mc)
-            }
+            ClearStage()
             root.gotoAndPlay(frame, scene)
         }
 
         public static function Restart():void{
+            execute_exit_cbs()
             clearStage()
             safeGotoAndPlay(1, "Preload")
         }
@@ -80,12 +68,30 @@ package MineArcade.mcs_getter {
             })
         }
 
+        public static function GoArcade2(arcadeSceneName:String, frame:int=1):LPromise{
+            return CutScene.cutScene2().then(function(ok:Function):void{
+                safeGotoAndStop(frame, arcadeSceneName)
+                ok()
+            })
+        }
+
         public static function ClearListeners():void {
             for (var prop:String in root) {
                 if (root.hasOwnProperty(prop) && prop.indexOf("on") == 0) {
                     delete root[prop];
                 }
             }
+        }
+
+        public static function RegistExit(cb:Function):void{
+            exit_cbs.push(cb);
+        }
+
+        private static function execute_exit_cbs():void{
+            for each (var cb:Function in exit_cbs) {
+                cb();
+            }
+            exit_cbs = [];
         }
     }
 }
