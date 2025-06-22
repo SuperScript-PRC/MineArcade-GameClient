@@ -34,6 +34,7 @@ package MineArcade.finisher {
             // todo: 仍未支持多人游戏
             if (gamemode != 0) {
                 TopMessage.show("暂无法选择多人游戏")
+                return
             }
             core.getPacketWriter().WritePacket(new ArcadeMatchJoin(GameType.PLANE_FIGHTER, gamemode, 0))
             core.getPacketHander().waitForPacket(PacketIDs.IDArcadeMatchJoinResp, 10000).then(function(ok:Function, res:ArcadeMatchJoinResp, is_ok:Boolean):void {

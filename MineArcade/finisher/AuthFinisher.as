@@ -32,6 +32,7 @@ package MineArcade.finisher {
                     TopMessage.show("登录成功, 欢迎 " + username)
                 } else {
                     TipWindow.error("登录失败: " + messgae, 500, 300)
+                    return
                 }
                 ok(success, messgae, status_code)
             })
